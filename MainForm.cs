@@ -46,7 +46,7 @@ namespace AlgebraicExpressionsTranslation
 
         private void fullAlgorithmButton_Click(object sender, EventArgs e)
         {
-            AlgorithmV2 algorithmV2 = new AlgorithmV2 (immutableInfixString, isTactMode: false); // a - sin, b - cos, c - sqrt, d - ln
+            AlgorithmV2 algorithmV2 = new AlgorithmV2 (immutableInfixString, isUsingDecisionTable: false, isTactMode: false); // a - sin, b - cos, c - sqrt, d - ln
 
             Console.WriteLine("---INPUT STRING---");
             Console.WriteLine(algorithmV2.GetInputString());
@@ -60,7 +60,7 @@ namespace AlgebraicExpressionsTranslation
 
         private void tactAlgorithmButton_Click(object sender, EventArgs e) // Does not work
         {
-            AlgorithmV2 algorithmV2 = new AlgorithmV2(currentInfixString, isTactMode: true);
+            AlgorithmV2 algorithmV2 = new AlgorithmV2(currentInfixString, isUsingDecisionTable: true, isTactMode: true);
             algorithmV2.General();
 
             postfixString = algorithmV2.GetOutputString();

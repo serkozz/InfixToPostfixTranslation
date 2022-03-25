@@ -19,23 +19,26 @@ namespace AlgebraicExpressionsTranslation
 
         const byte stackSize = 80;
         char[] stack = new char[stackSize];
-        byte stackPointer = 0;
+        byte stackPointer = 1;
 
         bool isTactMode = false;
+        bool isUsingDecisionTable;
         public static bool tactAvailableFlag = true;
 
-        public AlgorithmV2(string inputString, bool isTactMode)
+        public AlgorithmV2(string inputString, bool isUsingDecisionTable, bool isTactMode)
         {
             if (inputString != null)
             {
                 this.inputString = inputString;
                 this.inputString += stringEndSymbol;
+                this.isUsingDecisionTable = isUsingDecisionTable;
                 this.isTactMode = isTactMode;
             }
             else
             {
                 this.inputString = "H+E+L+L";
                 this.inputString += stringEndSymbol;
+                this.isUsingDecisionTable = isUsingDecisionTable;
                 this.isTactMode = isTactMode;
             }
         }
@@ -43,15 +46,16 @@ namespace AlgebraicExpressionsTranslation
         public void General() // Общий метод (main своего рода )
         {
             inputStringCharArray = inputString.ToCharArray();
-            if (!isTactMode)
+
+            if (!isUsingDecisionTable)
             {
                 CreatePostfix(inputStringCharArray);
                 outputString = string.Join(null, outputCharArray);
             }
 
-            if (isTactMode)
+            if (isUsingDecisionTable)
             {
-                CreatePostfixTact(inputStringCharArray);
+                CreatePostfixV2(inputStringCharArray);
                 outputString = string.Join(null, outputCharArray);
             }
         }
@@ -76,7 +80,7 @@ namespace AlgebraicExpressionsTranslation
             return stack[index];
         }
 
-        void DeleteLastStackItem() // Удалить элемент на верхушке стека
+        void DeleteLastStackItem() // Удалить элемент на верхушке стека (сдвинуть указатель)
         {
             stackPointer--;
         }
@@ -90,15 +94,17 @@ namespace AlgebraicExpressionsTranslation
         {
             return (input == '+' || input == '-' ||
                 input == '/' || input == '^' ||
-                input == '*' || input == '(' ||
+                input == '*' || /*input == 'a' || 
+                input == 'b' || input == 'c' ||
+                input == 'd' ||*/ input == '(' ||
                 input == ')' || input == '\0') ? false : true;
         }
 
-        char Pop() // Извлечь элемент находящийся на верхушке стека
+        char Pop(int stackPointer) // Извлечь элемент находящийся на верхушке стека
         {
-            if (stackPointer >= 0)
+            if (stackPointer > 0) // Было >=
             {
-                stackPointer--;
+                stackPointer++; ; // Возможно дело в инкременте и декременте (надо ++поинтер а не поинтер++ например). Изначально тут было поинтер++
                 return stack[stackPointer];
             }
             else
@@ -145,7 +151,7 @@ namespace AlgebraicExpressionsTranslation
                                 i++;
                                 break;
                             case 2:
-                                outputCharArray[j] = Pop();
+                                outputCharArray[j] = Pop(stackPointer);
                                 j++;
                                 break;
                             case 3:
@@ -157,7 +163,7 @@ namespace AlgebraicExpressionsTranslation
                                 {
                                     while (!IsStackEmpty())
                                     {
-                                        outputCharArray[j] = Pop();
+                                        outputCharArray[j] = Pop(stackPointer);
                                         j++;
                                     }
                                 }
@@ -165,76 +171,6 @@ namespace AlgebraicExpressionsTranslation
                             case 5:
                                 Console.WriteLine("Некорректно составлено выражение!!!");
                                 return;
-                        }
-                    }
-                }
-            }
-        }
-
-        void CreatePostfixTact(char[] inputCharArray)
-        {
-            int i = 0; // Индекс очередного символа входной строки
-            int j = 0; // Индекс очередного символа выходной строки
-
-            while (tactAvailableFlag)
-            {
-                while (i < inputCharArray.Length)
-                {
-                    if (isOperation(inputCharArray[i])) // Если входной символ не операция (isOperation(char) == false if char == operationSymbol (+, -, *, /, ...)) а переменная, то вставляем его в выходную строку
-                    {
-                        outputCharArray[j] = inputCharArray[i];
-                        j++;
-                        i++;
-                        tactAvailableFlag = false;
-                    }
-                    else
-                    {
-                        if (IsStackEmpty()) // Если стек пустой, то пихнуть в стек символ входной строки
-                        {
-                            Push(inputCharArray[i]);
-                            i++;
-                            tactAvailableFlag = false;
-                        }
-                        else // Если стек не пустой, то в зависимости от его верхушки и входного символа производим операции
-                        {
-                            switch (GetDecisionTableValue(inputCharArray[i], GetStackElement((GetStackPointerPos() - 1))))
-                            {
-                                case 0:
-                                    Console.WriteLine("Непредусмотренная ситуация!!!");
-                                    tactAvailableFlag = false;
-                                    return;
-                                case 1:
-                                    Push(inputCharArray[i]);
-                                    i++;
-                                    tactAvailableFlag = false;
-                                    break;
-                                case 2:
-                                    outputCharArray[j] = Pop();
-                                    j++;
-                                    tactAvailableFlag = false;
-                                    break;
-                                case 3:
-                                    DeleteLastStackItem();
-                                    i++;
-                                    tactAvailableFlag = false;
-                                    break;
-                                case 4:
-                                    if (!IsStackEmpty())
-                                    {
-                                        while (!IsStackEmpty())
-                                        {
-                                            outputCharArray[j] = Pop();
-                                            j++;
-                                            tactAvailableFlag = false;
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                case 5:
-                                    Console.WriteLine("Некорректно составлено выражение!!!");
-                                    tactAvailableFlag = false;
-                                    return;
-                            }
                         }
                     }
                 }
@@ -274,6 +210,176 @@ namespace AlgebraicExpressionsTranslation
                 return 1;
             else // В другом случае ошибка составления выражения 
                 return 0;
+        }
+
+        public byte SymbNumInputStr(char? symbol) // работает, проверено
+        {
+            string englishAlphabet = "ABCDFFGHIJKLMNOPQRSTUVWXYZ";
+            byte result = 0;
+
+            if (symbol == stringEndSymbol)
+                return result = 0;
+            else
+            {
+                switch (symbol)
+                {
+                    case '+':
+                        result = 1;
+                        break;
+                    case '-':
+                        result = 2;
+                        break;
+                    case '*':
+                        result = 3;
+                        break;
+                    case '/':
+                        result = 4;
+                        break;
+                    case '^':
+                        result = 5;
+                        break;
+                    case '(':
+                        result = 6;
+                        break;
+                    case ')':
+                        result = 7;
+                        break;
+                    case 'a': // sin
+                        result = 8;
+                        break;
+                    case 'b': // cos
+                        result = 8;
+                        break;
+                    case 'c': // sqrt
+                        result = 8;
+                        break;
+                    case 'd': // ln
+                        result = 8;
+                        break;
+                }
+
+                if (englishAlphabet.Contains(Convert.ToString(symbol)))
+                    result = 9;
+            }
+            return result;
+        }
+
+        public byte SymbNumInStack() // Также работает, но надо устранить проблему с позицией стекпоинтера
+        {
+            byte result = 0;
+            char lastStackSymbol = Pop(stackPointer);
+
+            if (lastStackSymbol != whiteSpace)
+            {
+                switch (lastStackSymbol)
+                {
+                    case '+':
+                        result = 1;
+                        break;
+                    case '-':
+                        result = 2;
+                        break;
+                    case '*':
+                        result = 3;
+                        break;
+                    case '/':
+                        result = 4;
+                        break;
+                    case '^':
+                        result = 5;
+                        break;
+                    case '(':
+                        result = 6;
+                        break;
+                    case 'a': // sin
+                        result = 7;
+                        break;
+                    case 'b': // cos
+                        result = 7;
+                        break;
+                    case 'c': // sqrt
+                        result = 7;
+                        break;
+                    case 'd': // ln
+                        result = 7;
+                        break;
+                }
+            }
+            else
+                result = 0;
+            return result;
+        }
+
+        void CreatePostfixV2(char[] inputCharArray)
+        {
+
+            byte[,] decisionTable = new byte[,]
+                { {4, 1, 1, 1, 1, 1, 1, 5, 1, 6},
+                  {2, 2, 2, 1, 1, 1, 1, 2, 1, 6},
+                  {2, 2, 2, 1, 1, 1, 1, 2, 1, 6},
+                  {2, 2, 2, 2, 2, 1, 1, 2, 1, 6},
+                  {2, 2, 2, 2, 2, 1, 1, 2, 1, 6},
+                  {2, 2, 2, 2, 2, 2, 1, 2, 1, 6},
+                  {5, 1, 1, 1, 1, 1, 1, 3, 1, 6},
+                  {2, 2, 2, 2, 2, 2, 1, 7, 7, 6} };
+
+            /*            1 – поместить символ из входной строки в стек;
+                        2 – извлечь символ из стека и отправить его в выходную строку;
+                        3 – удалить символ ")" из входной строки и символ "(" из стека;
+                        4 – успешное окончание преобразования;
+                        5 – ошибка скобочной структуры;
+                        6 – переслать символ из входной строки в выходную строку;
+                        7 – ошибка: после функции отсутствует "(".*/
+
+
+            int i = 0; // Индекс очередного символа входной строки
+            int j = 0; // Индекс очередного символа выходной строки
+
+            while (i < inputCharArray.Length)
+            {
+                byte rowIndex = SymbNumInStack();
+                byte columnIndex = SymbNumInputStr(inputCharArray[i]);
+
+                byte decision = decisionTable[rowIndex, columnIndex];
+
+                switch (decision)
+                {
+                    case 1:
+                        Push(inputCharArray[i]);
+                        i++;
+                        break;
+                    case 2:
+                        outputCharArray[j] = Pop(stackPointer);
+                        j++;
+                        break;
+                    case 3: // Удаление скобки из стека производится путем смещения указателя на его вершину ко дну
+                        DeleteLastStackItem();
+                        i++;
+                        break;
+                    case 4:
+                        if (!IsStackEmpty())
+                        {
+                            while (!IsStackEmpty())
+                            {
+                                outputCharArray[j] = Pop(stackPointer);
+                                j++;
+                            }
+                        }
+                        Console.WriteLine("Успешно завершено!");
+                        return;
+                    case 5:
+                        Console.WriteLine("Ошибка скобочной структуры");
+                        return;
+                    case 6:
+                        outputCharArray[j] = inputCharArray[i];
+                        j++;
+                        i++;
+                        break;
+                    case 7:
+                        Console.WriteLine("После функции отсутствует открывающая скобка");
+                        return;
+                }
+            }
         }
     }
 }
