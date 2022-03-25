@@ -100,11 +100,11 @@ namespace AlgebraicExpressionsTranslation
                 input == ')' || input == '\0') ? false : true;
         }
 
-        char Pop(int stackPointer) // Извлечь элемент находящийся на верхушке стека
+        char Pop() // Извлечь элемент находящийся на верхушке стека
         {
-            if (stackPointer > 0) // Было >=
+            if (GetStackPointerPos() > 0) // Было >=
             {
-                stackPointer++; ; // Возможно дело в инкременте и декременте (надо ++поинтер а не поинтер++ например). Изначально тут было поинтер++
+                stackPointer--; // Возможно дело в инкременте и декременте (надо ++поинтер а не поинтер++ например). Изначально тут было поинтер++
                 return stack[stackPointer];
             }
             else
@@ -115,6 +115,7 @@ namespace AlgebraicExpressionsTranslation
         {
             if (stackPointer == stackSize)
                 return;
+            //stackPointer++;
             stack[stackPointer] = symbol;
             stackPointer++;
         }
@@ -151,7 +152,7 @@ namespace AlgebraicExpressionsTranslation
                                 i++;
                                 break;
                             case 2:
-                                outputCharArray[j] = Pop(stackPointer);
+                                outputCharArray[j] = Pop();
                                 j++;
                                 break;
                             case 3:
@@ -163,7 +164,7 @@ namespace AlgebraicExpressionsTranslation
                                 {
                                     while (!IsStackEmpty())
                                     {
-                                        outputCharArray[j] = Pop(stackPointer);
+                                        outputCharArray[j] = Pop();
                                         j++;
                                     }
                                 }
@@ -267,7 +268,7 @@ namespace AlgebraicExpressionsTranslation
         public byte SymbNumInStack() // Также работает, но надо устранить проблему с позицией стекпоинтера
         {
             byte result = 0;
-            char lastStackSymbol = Pop(stackPointer);
+            char lastStackSymbol = GetStackElement(stackPointer);
 
             if (lastStackSymbol != whiteSpace)
             {
@@ -349,7 +350,7 @@ namespace AlgebraicExpressionsTranslation
                         i++;
                         break;
                     case 2:
-                        outputCharArray[j] = Pop(stackPointer);
+                        outputCharArray[j] = Pop();
                         j++;
                         break;
                     case 3: // Удаление скобки из стека производится путем смещения указателя на его вершину ко дну
@@ -361,7 +362,7 @@ namespace AlgebraicExpressionsTranslation
                         {
                             while (!IsStackEmpty())
                             {
-                                outputCharArray[j] = Pop(stackPointer);
+                                outputCharArray[j] = Pop();
                                 j++;
                             }
                         }

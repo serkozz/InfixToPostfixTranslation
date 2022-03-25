@@ -60,7 +60,7 @@ namespace AlgebraicExpressionsTranslation
 
         private void tactAlgorithmButton_Click(object sender, EventArgs e) // Does not work
         {
-            AlgorithmV2 algorithmV2 = new AlgorithmV2(currentInfixString, isUsingDecisionTable: true, isTactMode: true);
+            AlgorithmV2 algorithmV2 = new AlgorithmV2(immutableInfixString, isUsingDecisionTable: true, isTactMode: true);
             algorithmV2.General();
 
             postfixString = algorithmV2.GetOutputString();
