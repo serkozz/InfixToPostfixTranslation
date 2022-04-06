@@ -55,11 +55,10 @@ namespace AlgebraicExpressionsTranslation
 
         private void fullAlgorithmButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("---INPUT STRING---");
-            Console.WriteLine(algorithmFull.GetInputString());
-            Console.WriteLine("---OUTPUT STRING---");
+            if (immutableInfixString == null)
+                return;
+
             algorithmFull.General();
-            Console.WriteLine(algorithmFull.GetOutputString());
 
             postfixString = algorithmFull.GetOutputString();
             postfixText.Text = postfixString;
@@ -67,6 +66,9 @@ namespace AlgebraicExpressionsTranslation
 
         private void tactAlgorithmButton_Click(object sender, EventArgs e)
         {
+            if (immutableInfixString == null)
+                return;
+
             algorithmTact.SetTactButtonPressed();
 
             VisualizeStack();
