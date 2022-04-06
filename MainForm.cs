@@ -16,9 +16,53 @@ namespace AlgebraicExpressionsTranslation
         private string currentInfixString;
         private string postfixString;
 
+        private string stackPointerSymbol = "<--";
+
+        private Algorithm algorithmFull;
+        private Algorithm algorithmTact;
+
+        const int listBoxCapacity = 20; // Вместимость листбокса на форме
+        int currentStackListBoxIndex;
+        int currentStackPointerListBoxIndex;
+
         public MainForm()
         {
             InitializeComponent();
+
+            UpdateStackListBox();
+            UpdateStackPointerListBox();
+        }
+
+        private void UpdateAlgorithm()
+        {
+            algorithmTact = new Algorithm(immutableInfixString, isTactMode: true);
+            algorithmFull = new Algorithm(immutableInfixString, isTactMode: false);
+        }
+
+        private void UpdateStackListBox()
+        {
+            stackListBox.Items.Clear();
+            stackPointerListBox.Items.Clear();
+
+            for (int i = 0; i < listBoxCapacity; i++)
+            {
+                stackListBox.Items.Add(' ');
+                stackPointerListBox.Items.Add(' ');
+            }
+
+            currentStackListBoxIndex = listBoxCapacity;
+        }
+
+        private void UpdateStackPointerListBox()
+        {
+            stackPointerListBox.Items.Clear();
+
+            for (int i = 0; i < listBoxCapacity; i++)
+            {
+                stackPointerListBox.Items.Add(' ');
+            }
+
+            currentStackPointerListBoxIndex = listBoxCapacity;
         }
 
         private void functionWizardButton_Click(object sender, EventArgs e) // Обработчик мастера функций
@@ -34,6 +78,10 @@ namespace AlgebraicExpressionsTranslation
                     currentInfixString = functionWizard.inputString;
 
                     immutableInfixText.Text = immutableInfixString;
+
+                    UpdateAlgorithm();
+                    UpdateStackListBox();
+                    UpdateStackPointerListBox();
                 }
             };
             functionWizard.Show();
@@ -44,27 +92,66 @@ namespace AlgebraicExpressionsTranslation
             postfixText.Text = postfixString;
         }
 
+        private (bool, int, char) InsertItemIntoListbox()
+        {
+            char lastStackSymbol = algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1);
+            int stackPointerPos = algorithmTact.GetStackPointerPos()-1;
+
+            if (lastStackSymbol != ' ')
+                return (true, stackPointerPos, lastStackSymbol);
+            else
+                return (false, stackPointerPos, lastStackSymbol);
+        }
+
         private void fullAlgorithmButton_Click(object sender, EventArgs e)
         {
-            AlgorithmV2 algorithmV2 = new AlgorithmV2 (immutableInfixString, isUsingDecisionTable: false, isTactMode: false); // a - sin, b - cos, c - sqrt, d - ln
-
             Console.WriteLine("---INPUT STRING---");
-            Console.WriteLine(algorithmV2.GetInputString());
+            Console.WriteLine(algorithmFull.GetInputString());
             Console.WriteLine("---OUTPUT STRING---");
-            algorithmV2.General();
-            Console.WriteLine(algorithmV2.GetOutputString());
+            algorithmFull.General();
+            Console.WriteLine(algorithmFull.GetOutputString());
 
-            postfixString = algorithmV2.GetOutputString();
+            postfixString = algorithmFull.GetOutputString();
             postfixText.Text = postfixString;
         }
 
-        private void tactAlgorithmButton_Click(object sender, EventArgs e) // Does not work
+        private void tactAlgorithmButton_Click(object sender, EventArgs e) // Partly working
         {
-            AlgorithmV2 algorithmV2 = new AlgorithmV2(immutableInfixString, isUsingDecisionTable: true, isTactMode: true);
-            algorithmV2.General();
+            algorithmTact.SetTactButtonPressed();
 
-            postfixString = algorithmV2.GetOutputString();
+            int previousStackPointerPos = algorithmTact.GetStackPointerPos(); // Переменные запоминающие позиции поинтера нужны для того, чтобы
+                                                                               // Исключить дублирование элементов в стеке
+            algorithmTact.General();
+            int currentStackPointerPos = algorithmTact.GetStackPointerPos();
+
+            postfixString = algorithmTact.GetOutputString();
+            currentInfixString = algorithmTact.GetCurrentInputString();
+
             postfixText.Text = postfixString;
+            infixText.Text = currentInfixString;
+
+            (bool, int, char) tuple = InsertItemIntoListbox();
+
+            if (tuple.Item1 && previousStackPointerPos != currentStackPointerPos)
+            {
+                stackListBox.Items.RemoveAt(currentStackListBoxIndex - 1);
+                stackListBox.Items.Insert(currentStackListBoxIndex - 1, tuple.Item3);
+
+                stackPointerListBox.Items.RemoveAt(currentStackPointerListBoxIndex - 1);
+                stackPointerListBox.Items.Insert(currentStackPointerListBoxIndex - 1, stackPointerSymbol);
+
+                if (previousStackPointerPos < currentStackPointerPos) // Если происходит сдвиг поинтера к концу стека
+                {
+                    currentStackListBoxIndex--;
+                    currentStackListBoxIndex--;
+                }
+
+                if (previousStackPointerPos > currentStackPointerPos) // Если происходит сдвиг поинтера к началу стека
+                {
+                    UpdateStackPointerListBox();
+                    currentStackListBoxIndex++;
+                }
+            }
         }
     }
 }

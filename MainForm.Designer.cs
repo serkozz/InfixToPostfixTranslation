@@ -37,12 +37,12 @@ namespace AlgebraicExpressionsTranslation
             this.label3 = new System.Windows.Forms.Label();
             this.postfixText = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.stackText = new System.Windows.Forms.TextBox();
             this.tactAlgorithmButton = new System.Windows.Forms.Button();
             this.fullAlgorithmButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.updateValuesButton = new System.Windows.Forms.Button();
-            this.stackPointerText = new System.Windows.Forms.TextBox();
+            this.stackListBox = new System.Windows.Forms.ListBox();
+            this.stackPointerListBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // immutableInfixText
@@ -126,17 +126,6 @@ namespace AlgebraicExpressionsTranslation
             this.label4.TabIndex = 7;
             this.label4.Text = "Стек";
             // 
-            // stackText
-            // 
-            this.stackText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stackText.Location = new System.Drawing.Point(16, 245);
-            this.stackText.MaxLength = 640;
-            this.stackText.Multiline = true;
-            this.stackText.Name = "stackText";
-            this.stackText.ReadOnly = true;
-            this.stackText.Size = new System.Drawing.Size(107, 291);
-            this.stackText.TabIndex = 8;
-            // 
             // tactAlgorithmButton
             // 
             this.tactAlgorithmButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -180,28 +169,75 @@ namespace AlgebraicExpressionsTranslation
             this.updateValuesButton.UseVisualStyleBackColor = true;
             this.updateValuesButton.Click += new System.EventHandler(this.updateValuesButton_Click);
             // 
-            // stackPointerText
+            // stackListBox
             // 
-            this.stackPointerText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stackPointerText.Location = new System.Drawing.Point(128, 245);
-            this.stackPointerText.MaxLength = 640;
-            this.stackPointerText.Multiline = true;
-            this.stackPointerText.Name = "stackPointerText";
-            this.stackPointerText.ReadOnly = true;
-            this.stackPointerText.Size = new System.Drawing.Size(71, 291);
-            this.stackPointerText.TabIndex = 289;
+            this.stackListBox.FormattingEnabled = true;
+            this.stackListBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"});
+            this.stackListBox.Location = new System.Drawing.Point(16, 257);
+            this.stackListBox.Name = "stackListBox";
+            this.stackListBox.Size = new System.Drawing.Size(93, 264);
+            this.stackListBox.TabIndex = 13;
+            // 
+            // stackPointerListBox
+            // 
+            this.stackPointerListBox.FormattingEnabled = true;
+            this.stackPointerListBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"});
+            this.stackPointerListBox.Location = new System.Drawing.Point(117, 257);
+            this.stackPointerListBox.Name = "stackPointerListBox";
+            this.stackPointerListBox.Size = new System.Drawing.Size(57, 264);
+            this.stackPointerListBox.TabIndex = 14;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 546);
-            this.Controls.Add(this.stackPointerText);
+            this.Controls.Add(this.stackPointerListBox);
+            this.Controls.Add(this.stackListBox);
             this.Controls.Add(this.updateValuesButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.fullAlgorithmButton);
             this.Controls.Add(this.tactAlgorithmButton);
-            this.Controls.Add(this.stackText);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.postfixText);
             this.Controls.Add(this.label3);
@@ -228,12 +264,12 @@ namespace AlgebraicExpressionsTranslation
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox postfixText;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox stackText;
         private System.Windows.Forms.Button tactAlgorithmButton;
         private System.Windows.Forms.Button fullAlgorithmButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button updateValuesButton;
-        private System.Windows.Forms.TextBox stackPointerText;
+        private System.Windows.Forms.ListBox stackListBox;
+        private System.Windows.Forms.ListBox stackPointerListBox;
     }
 }
 
