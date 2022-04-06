@@ -12,57 +12,25 @@ namespace AlgebraicExpressionsTranslation
 {
     public partial class MainForm : Form
     {
-        private string immutableInfixString;
-        private string currentInfixString;
-        private string postfixString;
+        string immutableInfixString;
+        string currentInfixString;
+        string postfixString;
 
-        private string stackPointerSymbol = "<--";
+        const string stackPointerSymbol = "<";
+        const string whiteSpace = " ";
 
-        private Algorithm algorithmFull;
-        private Algorithm algorithmTact;
-
-        const int listBoxCapacity = 20; // Вместимость листбокса на форме
-        int currentStackListBoxIndex;
-        int currentStackPointerListBoxIndex;
+        Algorithm algorithmFull;
+        Algorithm algorithmTact;
 
         public MainForm()
         {
             InitializeComponent();
-
-            UpdateStackListBox();
-            UpdateStackPointerListBox();
         }
 
         private void UpdateAlgorithm()
         {
             algorithmTact = new Algorithm(immutableInfixString, isTactMode: true);
             algorithmFull = new Algorithm(immutableInfixString, isTactMode: false);
-        }
-
-        private void UpdateStackListBox()
-        {
-            stackListBox.Items.Clear();
-            stackPointerListBox.Items.Clear();
-
-            for (int i = 0; i < listBoxCapacity; i++)
-            {
-                stackListBox.Items.Add(' ');
-                stackPointerListBox.Items.Add(' ');
-            }
-
-            currentStackListBoxIndex = listBoxCapacity;
-        }
-
-        private void UpdateStackPointerListBox()
-        {
-            stackPointerListBox.Items.Clear();
-
-            for (int i = 0; i < listBoxCapacity; i++)
-            {
-                stackPointerListBox.Items.Add(' ');
-            }
-
-            currentStackPointerListBoxIndex = listBoxCapacity;
         }
 
         private void functionWizardButton_Click(object sender, EventArgs e) // Обработчик мастера функций
@@ -80,27 +48,9 @@ namespace AlgebraicExpressionsTranslation
                     immutableInfixText.Text = immutableInfixString;
 
                     UpdateAlgorithm();
-                    UpdateStackListBox();
-                    UpdateStackPointerListBox();
                 }
             };
             functionWizard.Show();
-        }
-
-        private void updateValuesButton_Click(object sender, EventArgs e)
-        {
-            postfixText.Text = postfixString;
-        }
-
-        private (bool, int, char) InsertItemIntoListbox()
-        {
-            char lastStackSymbol = algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1);
-            int stackPointerPos = algorithmTact.GetStackPointerPos()-1;
-
-            if (lastStackSymbol != ' ')
-                return (true, stackPointerPos, lastStackSymbol);
-            else
-                return (false, stackPointerPos, lastStackSymbol);
         }
 
         private void fullAlgorithmButton_Click(object sender, EventArgs e)
@@ -115,41 +65,129 @@ namespace AlgebraicExpressionsTranslation
             postfixText.Text = postfixString;
         }
 
-        private void tactAlgorithmButton_Click(object sender, EventArgs e) // Partly working
+        private void tactAlgorithmButton_Click(object sender, EventArgs e)
         {
             algorithmTact.SetTactButtonPressed();
 
-            int previousStackPointerPos = algorithmTact.GetStackPointerPos(); // Переменные запоминающие позиции поинтера нужны для того, чтобы
-                                                                               // Исключить дублирование элементов в стеке
+            VisualizeStack();
+
             algorithmTact.General();
-            int currentStackPointerPos = algorithmTact.GetStackPointerPos();
+
+            if (algorithmTact.GetEndFlag())
+                fullAlgorithmButton.Enabled = true;
+            else
+                fullAlgorithmButton.Enabled = false;
 
             postfixString = algorithmTact.GetOutputString();
             currentInfixString = algorithmTact.GetCurrentInputString();
 
             postfixText.Text = postfixString;
             infixText.Text = currentInfixString;
+        }
 
-            (bool, int, char) tuple = InsertItemIntoListbox();
+        private void SetDefaultStackPointerVisualization() // Устанавливает отображение указателя в стандартное состояние 
+        {
+            stackPointer0.Text = whiteSpace;
+            stackPointer1.Text = whiteSpace;
+            stackPointer2.Text = whiteSpace;
+            stackPointer3.Text = whiteSpace;
+            stackPointer4.Text = whiteSpace;
+            stackPointer5.Text = whiteSpace;
+            stackPointer6.Text = whiteSpace;
+            stackPointer7.Text = whiteSpace;
+            stackPointer8.Text = whiteSpace;
+            stackPointer9.Text = whiteSpace;
+            stackPointer10.Text = whiteSpace;
+            stackPointer11.Text = whiteSpace;
+            stackPointer12.Text = whiteSpace;
+            stackPointer13.Text = whiteSpace;
+            stackPointer14.Text = whiteSpace;
+        }
 
-            if (tuple.Item1 && previousStackPointerPos != currentStackPointerPos)
+        private void VisualizeStack() // Визуализация стека
+        {
+            if (algorithmTact.GetTactMode())
             {
-                stackListBox.Items.RemoveAt(currentStackListBoxIndex - 1);
-                stackListBox.Items.Insert(currentStackListBoxIndex - 1, tuple.Item3);
-
-                stackPointerListBox.Items.RemoveAt(currentStackPointerListBoxIndex - 1);
-                stackPointerListBox.Items.Insert(currentStackPointerListBoxIndex - 1, stackPointerSymbol);
-
-                if (previousStackPointerPos < currentStackPointerPos) // Если происходит сдвиг поинтера к концу стека
+                if (!algorithmTact.GetEndFlag())
                 {
-                    currentStackListBoxIndex--;
-                    currentStackListBoxIndex--;
-                }
-
-                if (previousStackPointerPos > currentStackPointerPos) // Если происходит сдвиг поинтера к началу стека
-                {
-                    UpdateStackPointerListBox();
-                    currentStackListBoxIndex++;
+                    switch (algorithmTact.GetStackPointerPos() - 1)
+                    {
+                        case 0:
+                            stack0.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer0.Text = stackPointerSymbol;
+                            break;
+                        case 1:
+                            stack1.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer1.Text = stackPointerSymbol;
+                            break;
+                        case 2:
+                            stack2.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer2.Text = stackPointerSymbol;
+                            break;
+                        case 3:
+                            stack3.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer3.Text = stackPointerSymbol;
+                            break;
+                        case 4:
+                            stack4.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer4.Text = stackPointerSymbol;
+                            break;
+                        case 5:
+                            stack5.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer5.Text = stackPointerSymbol;
+                            break;
+                        case 6:
+                            stack6.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer6.Text = stackPointerSymbol;
+                            break;
+                        case 7:
+                            stack7.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer7.Text = stackPointerSymbol;
+                            break;
+                        case 8:
+                            stack8.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer8.Text = stackPointerSymbol;
+                            break;
+                        case 9:
+                            stack9.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer9.Text = stackPointerSymbol;
+                            break;
+                        case 10:
+                            stack10.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer10.Text = stackPointerSymbol;
+                            break;
+                        case 11:
+                            stack11.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer11.Text = stackPointerSymbol;
+                            break;
+                        case 12:
+                            stack12.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer12.Text = stackPointerSymbol;
+                            break;
+                        case 13:
+                            stack13.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer13.Text = stackPointerSymbol;
+                            break;
+                        case 14:
+                            stack14.Text = Convert.ToString(algorithmTact.GetStackElement(algorithmTact.GetStackPointerPos() - 1));
+                            SetDefaultStackPointerVisualization();
+                            stackPointer14.Text = stackPointerSymbol;
+                            break;
+                    }
                 }
             }
         }

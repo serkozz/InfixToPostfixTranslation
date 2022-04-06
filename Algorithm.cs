@@ -42,6 +42,16 @@ namespace AlgebraicExpressionsTranslation
             isTactButtonPressed = true;
         }
 
+        public bool GetTactMode() // Используется для отображения стека (если true, то стек отображается)
+        {
+            return isTactMode;
+        }
+
+        public bool GetEndFlag() // Используется для получения признака завершения алгоритма
+        {
+            return isEnded;
+        }
+
         public void ReleaseTactButtonPressed() // Метод, вызываемый извне для модификации переменной отвечающей за потактовое продвижение алгоритма
         {
             isTactButtonPressed = false;
@@ -74,6 +84,7 @@ namespace AlgebraicExpressionsTranslation
                     if (isEnded)
                     {
                         Console.WriteLine("\nУспешно завершено! Нажмите Escape для выхода...");
+                        System.Windows.Forms.MessageBox.Show("Алгоритм успешно выполнен!");
                         break;
                     }
                     if (!isTactButtonPressed)
