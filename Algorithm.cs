@@ -21,7 +21,7 @@ namespace AlgebraicExpressionsTranslation
         char[] outputCharArray = new char[200];
         int outputIndex = 0;
 
-        const byte stackSize = 80;
+        const byte stackSize = 15;
         char[] stack = new char[stackSize];
         string stackString = string.Empty;
         byte stackPointer = 1;
@@ -144,7 +144,10 @@ namespace AlgebraicExpressionsTranslation
         void Push(char symbol) // Внести на вершину стека значение
         {
             if (stackPointer == stackSize)
+            {
+                System.Windows.Forms.MessageBox.Show("Переполнение стека");
                 return;
+            }
             stack[stackPointer] = symbol;
             stackPointer++;
         }
@@ -268,10 +271,6 @@ namespace AlgebraicExpressionsTranslation
                         6 – переслать символ из входной строки в выходную строку;
                         7 – ошибка: после функции отсутствует "(".
             */
-
-
-            int i = 0; // Индекс очередного символа входной строки
-            int j = 0; // Индекс очередного символа выходной строки
 
             do
             {
