@@ -70,6 +70,16 @@ namespace AlgebraicExpressionsTranslation
             this.stackPointer12 = new System.Windows.Forms.TextBox();
             this.stackPointer13 = new System.Windows.Forms.TextBox();
             this.stackPointer14 = new System.Windows.Forms.TextBox();
+            this.numbersMeaningsListBox = new System.Windows.Forms.ListBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.functionsMeaningsListBox = new System.Windows.Forms.ListBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.fullCalculationButton = new System.Windows.Forms.Button();
+            this.tactCalculationButton = new System.Windows.Forms.Button();
+            this.updateCalculationButton = new System.Windows.Forms.Button();
+            this.resultText = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // immutableInfixText
@@ -79,14 +89,14 @@ namespace AlgebraicExpressionsTranslation
             this.immutableInfixText.MaxLength = 80;
             this.immutableInfixText.Name = "immutableInfixText";
             this.immutableInfixText.ReadOnly = true;
-            this.immutableInfixText.Size = new System.Drawing.Size(825, 29);
+            this.immutableInfixText.Size = new System.Drawing.Size(701, 29);
             this.immutableInfixText.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(161, 9);
+            this.label1.Location = new System.Drawing.Point(13, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(543, 24);
             this.label1.TabIndex = 1;
@@ -95,9 +105,9 @@ namespace AlgebraicExpressionsTranslation
             // functionWizardButton
             // 
             this.functionWizardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.functionWizardButton.Location = new System.Drawing.Point(165, 202);
+            this.functionWizardButton.Location = new System.Drawing.Point(770, 36);
             this.functionWizardButton.Name = "functionWizardButton";
-            this.functionWizardButton.Size = new System.Drawing.Size(167, 53);
+            this.functionWizardButton.Size = new System.Drawing.Size(195, 147);
             this.functionWizardButton.TabIndex = 2;
             this.functionWizardButton.Text = "Мастер функций";
             this.functionWizardButton.UseVisualStyleBackColor = true;
@@ -107,7 +117,7 @@ namespace AlgebraicExpressionsTranslation
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(282, 68);
+            this.label2.Location = new System.Drawing.Point(13, 68);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(298, 24);
             this.label2.TabIndex = 3;
@@ -120,14 +130,14 @@ namespace AlgebraicExpressionsTranslation
             this.infixText.MaxLength = 80;
             this.infixText.Name = "infixText";
             this.infixText.ReadOnly = true;
-            this.infixText.Size = new System.Drawing.Size(825, 29);
+            this.infixText.Size = new System.Drawing.Size(701, 29);
             this.infixText.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(315, 127);
+            this.label3.Location = new System.Drawing.Point(13, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(239, 24);
             this.label3.TabIndex = 5;
@@ -140,7 +150,7 @@ namespace AlgebraicExpressionsTranslation
             this.postfixText.MaxLength = 640;
             this.postfixText.Name = "postfixText";
             this.postfixText.ReadOnly = true;
-            this.postfixText.Size = new System.Drawing.Size(825, 29);
+            this.postfixText.Size = new System.Drawing.Size(701, 29);
             this.postfixText.TabIndex = 6;
             // 
             // label4
@@ -156,7 +166,7 @@ namespace AlgebraicExpressionsTranslation
             // tactAlgorithmButton
             // 
             this.tactAlgorithmButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tactAlgorithmButton.Location = new System.Drawing.Point(216, 554);
+            this.tactAlgorithmButton.Location = new System.Drawing.Point(133, 333);
             this.tactAlgorithmButton.Name = "tactAlgorithmButton";
             this.tactAlgorithmButton.Size = new System.Drawing.Size(167, 53);
             this.tactAlgorithmButton.TabIndex = 9;
@@ -167,7 +177,7 @@ namespace AlgebraicExpressionsTranslation
             // fullAlgorithmButton
             // 
             this.fullAlgorithmButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.fullAlgorithmButton.Location = new System.Drawing.Point(674, 554);
+            this.fullAlgorithmButton.Location = new System.Drawing.Point(133, 392);
             this.fullAlgorithmButton.Name = "fullAlgorithmButton";
             this.fullAlgorithmButton.Size = new System.Drawing.Size(167, 53);
             this.fullAlgorithmButton.TabIndex = 10;
@@ -179,11 +189,11 @@ namespace AlgebraicExpressionsTranslation
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(406, 568);
+            this.label5.Location = new System.Drawing.Point(156, 297);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(222, 24);
+            this.label5.Size = new System.Drawing.Size(123, 24);
             this.label5.TabIndex = 11;
-            this.label5.Text = "Выполнение алгоритма";
+            this.label5.Text = "Приведение";
             // 
             // stack0
             // 
@@ -425,11 +435,120 @@ namespace AlgebraicExpressionsTranslation
             this.stackPointer14.Size = new System.Drawing.Size(26, 29);
             this.stackPointer14.TabIndex = 42;
             // 
+            // numbersMeaningsListBox
+            // 
+            this.numbersMeaningsListBox.FormattingEnabled = true;
+            this.numbersMeaningsListBox.Location = new System.Drawing.Point(310, 222);
+            this.numbersMeaningsListBox.Name = "numbersMeaningsListBox";
+            this.numbersMeaningsListBox.Size = new System.Drawing.Size(252, 342);
+            this.numbersMeaningsListBox.TabIndex = 43;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(344, 195);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(188, 24);
+            this.label7.TabIndex = 47;
+            this.label7.Text = "Обозначения чисел";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(584, 195);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(212, 24);
+            this.label8.TabIndex = 49;
+            this.label8.Text = "Обозначения функций";
+            // 
+            // functionsMeaningsListBox
+            // 
+            this.functionsMeaningsListBox.FormattingEnabled = true;
+            this.functionsMeaningsListBox.Location = new System.Drawing.Point(568, 222);
+            this.functionsMeaningsListBox.Name = "functionsMeaningsListBox";
+            this.functionsMeaningsListBox.Size = new System.Drawing.Size(246, 342);
+            this.functionsMeaningsListBox.TabIndex = 48;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(845, 297);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(120, 24);
+            this.label6.TabIndex = 52;
+            this.label6.Text = "Вычисление";
+            // 
+            // fullCalculationButton
+            // 
+            this.fullCalculationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.fullCalculationButton.Location = new System.Drawing.Point(821, 457);
+            this.fullCalculationButton.Name = "fullCalculationButton";
+            this.fullCalculationButton.Size = new System.Drawing.Size(167, 53);
+            this.fullCalculationButton.TabIndex = 51;
+            this.fullCalculationButton.Text = "Полностью";
+            this.fullCalculationButton.UseVisualStyleBackColor = true;
+            this.fullCalculationButton.Click += new System.EventHandler(this.fullCalculationButton_Click);
+            // 
+            // tactCalculationButton
+            // 
+            this.tactCalculationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tactCalculationButton.Location = new System.Drawing.Point(821, 398);
+            this.tactCalculationButton.Name = "tactCalculationButton";
+            this.tactCalculationButton.Size = new System.Drawing.Size(167, 53);
+            this.tactCalculationButton.TabIndex = 50;
+            this.tactCalculationButton.Text = "Один такт";
+            this.tactCalculationButton.UseVisualStyleBackColor = true;
+            this.tactCalculationButton.Click += new System.EventHandler(this.tactCalculationButton_Click);
+            // 
+            // updateCalculationButton
+            // 
+            this.updateCalculationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.updateCalculationButton.Location = new System.Drawing.Point(820, 326);
+            this.updateCalculationButton.Name = "updateCalculationButton";
+            this.updateCalculationButton.Size = new System.Drawing.Size(167, 53);
+            this.updateCalculationButton.TabIndex = 53;
+            this.updateCalculationButton.Text = "Задать";
+            this.updateCalculationButton.UseVisualStyleBackColor = true;
+            this.updateCalculationButton.Click += new System.EventHandler(this.updateCalculationButton_Click);
+            // 
+            // resultText
+            // 
+            this.resultText.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.resultText.Location = new System.Drawing.Point(136, 584);
+            this.resultText.MaxLength = 640;
+            this.resultText.Name = "resultText";
+            this.resultText.ReadOnly = true;
+            this.resultText.Size = new System.Drawing.Size(701, 29);
+            this.resultText.TabIndex = 55;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(133, 557);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(103, 24);
+            this.label9.TabIndex = 54;
+            this.label9.Text = "Результат";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 613);
+            this.ClientSize = new System.Drawing.Size(1000, 613);
+            this.Controls.Add(this.resultText);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.updateCalculationButton);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.fullCalculationButton);
+            this.Controls.Add(this.tactCalculationButton);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.functionsMeaningsListBox);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.numbersMeaningsListBox);
             this.Controls.Add(this.stackPointer14);
             this.Controls.Add(this.stackPointer13);
             this.Controls.Add(this.stackPointer12);
@@ -492,36 +611,46 @@ namespace AlgebraicExpressionsTranslation
         private System.Windows.Forms.Button tactAlgorithmButton;
         private System.Windows.Forms.Button fullAlgorithmButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox stack0;
-        private System.Windows.Forms.TextBox stack1;
-        private System.Windows.Forms.TextBox stack2;
-        private System.Windows.Forms.TextBox stack3;
-        private System.Windows.Forms.TextBox stack4;
-        private System.Windows.Forms.TextBox stack5;
-        private System.Windows.Forms.TextBox stack6;
-        private System.Windows.Forms.TextBox stack7;
-        private System.Windows.Forms.TextBox stack8;
-        private System.Windows.Forms.TextBox stack9;
-        private System.Windows.Forms.TextBox stack10;
-        private System.Windows.Forms.TextBox stack11;
-        private System.Windows.Forms.TextBox stack12;
-        private System.Windows.Forms.TextBox stack13;
-        private System.Windows.Forms.TextBox stack14;
-        private System.Windows.Forms.TextBox stackPointer0;
-        private System.Windows.Forms.TextBox stackPointer1;
-        private System.Windows.Forms.TextBox stackPointer2;
-        private System.Windows.Forms.TextBox stackPointer3;
-        private System.Windows.Forms.TextBox stackPointer4;
-        private System.Windows.Forms.TextBox stackPointer5;
-        private System.Windows.Forms.TextBox stackPointer6;
-        private System.Windows.Forms.TextBox stackPointer7;
-        private System.Windows.Forms.TextBox stackPointer8;
-        private System.Windows.Forms.TextBox stackPointer9;
-        private System.Windows.Forms.TextBox stackPointer10;
-        private System.Windows.Forms.TextBox stackPointer11;
-        private System.Windows.Forms.TextBox stackPointer12;
-        private System.Windows.Forms.TextBox stackPointer13;
-        private System.Windows.Forms.TextBox stackPointer14;
+        protected System.Windows.Forms.TextBox stack0;
+        protected System.Windows.Forms.TextBox stack1;
+        protected System.Windows.Forms.TextBox stack2;
+        protected System.Windows.Forms.TextBox stack3;
+        protected System.Windows.Forms.TextBox stack4;
+        protected System.Windows.Forms.TextBox stack5;
+        protected System.Windows.Forms.TextBox stack6;
+        protected System.Windows.Forms.TextBox stack7;
+        protected System.Windows.Forms.TextBox stack8;
+        protected System.Windows.Forms.TextBox stack9;
+        protected System.Windows.Forms.TextBox stack10;
+        protected System.Windows.Forms.TextBox stack11;
+        protected System.Windows.Forms.TextBox stack12;
+        protected System.Windows.Forms.TextBox stack13;
+        protected System.Windows.Forms.TextBox stack14;
+        protected System.Windows.Forms.TextBox stackPointer0;
+        protected System.Windows.Forms.TextBox stackPointer1;
+        protected System.Windows.Forms.TextBox stackPointer2;
+        protected System.Windows.Forms.TextBox stackPointer3;
+        protected System.Windows.Forms.TextBox stackPointer4;
+        protected System.Windows.Forms.TextBox stackPointer5;
+        protected System.Windows.Forms.TextBox stackPointer6;
+        protected System.Windows.Forms.TextBox stackPointer7;
+        protected System.Windows.Forms.TextBox stackPointer8;
+        protected System.Windows.Forms.TextBox stackPointer9;
+        protected System.Windows.Forms.TextBox stackPointer10;
+        protected System.Windows.Forms.TextBox stackPointer11;
+        protected System.Windows.Forms.TextBox stackPointer12;
+        protected System.Windows.Forms.TextBox stackPointer13;
+        protected System.Windows.Forms.TextBox stackPointer14;
+        private System.Windows.Forms.ListBox numbersMeaningsListBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ListBox functionsMeaningsListBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button fullCalculationButton;
+        private System.Windows.Forms.Button tactCalculationButton;
+        private System.Windows.Forms.Button updateCalculationButton;
+        private System.Windows.Forms.TextBox resultText;
+        private System.Windows.Forms.Label label9;
     }
 }
 

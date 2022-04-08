@@ -19,8 +19,11 @@ namespace AlgebraicExpressionsTranslation
         const string stackPointerSymbol = "<";
         const string whiteSpace = " ";
 
-        Algorithm algorithmFull;
-        Algorithm algorithmTact;
+        Transformation transformationFull;
+        Transformation transformationTact;
+
+        Calculation calculationFull;
+        Calculation calculationTact;
 
         public MainForm()
         {
@@ -29,8 +32,14 @@ namespace AlgebraicExpressionsTranslation
 
         private void UpdateAlgorithm()
         {
-            algorithmTact = new Algorithm(immutableInfixString, isTactMode: true);
-            algorithmFull = new Algorithm(immutableInfixString, isTactMode: false);
+            transformationTact = new Transformation(immutableInfixString, isTactMode: true);
+            transformationFull = new Transformation(immutableInfixString, isTactMode: false);
+        }
+
+        private void UpdateCalculation()
+        {
+            calculationTact = new Calculation(postfixString, isTactMode: true);
+            calculationFull = new Calculation(postfixString, isTactMode: false);
         }
 
         private void functionWizardButton_Click(object sender, EventArgs e) // Обработчик мастера функций
@@ -58,9 +67,9 @@ namespace AlgebraicExpressionsTranslation
             if (immutableInfixString == null)
                 return;
 
-            algorithmFull.General();
+            transformationFull.General();
 
-            postfixString = algorithmFull.GetOutputString();
+            postfixString = transformationFull.GetOutputString();
             postfixText.Text = postfixString;
         }
 
@@ -69,19 +78,29 @@ namespace AlgebraicExpressionsTranslation
             if (immutableInfixString == null)
                 return;
 
-            algorithmTact.SetTactButtonPressed();
+            transformationTact.SetTactButtonPressed();
 
             VisualizeStack();
 
-            algorithmTact.General();
+            transformationTact.General();
 
-            if (algorithmTact.GetEndFlag())
+            if (transformationTact.GetEndFlag())
+            {
                 fullAlgorithmButton.Enabled = true;
+                fullCalculationButton.Enabled = true;
+                tactCalculationButton.Enabled = true;
+                updateCalculationButton.Enabled = true;
+            }
             else
+            {
                 fullAlgorithmButton.Enabled = false;
+                fullCalculationButton.Enabled = false;
+                tactCalculationButton.Enabled = false;
+                updateCalculationButton.Enabled = false;
+            }
 
-            postfixString = algorithmTact.GetOutputString();
-            currentInfixString = algorithmTact.GetCurrentInputString();
+            postfixString = transformationTact.GetOutputString();
+            currentInfixString = transformationTact.GetCurrentInputString();
 
             postfixText.Text = postfixString;
             infixText.Text = currentInfixString;
@@ -108,90 +127,105 @@ namespace AlgebraicExpressionsTranslation
 
         private void VisualizeStack() // Визуализация стека
         {
-            if (algorithmTact.GetTactMode())
+            if (transformationTact.GetTactMode())
             {
-                if (!algorithmTact.GetEndFlag())
+                if (!transformationTact.GetEndFlag())
                 {
-                    switch (algorithmTact.stack.GetStackPointerPos() - 1)
+                    switch (transformationTact.stack.GetStackPointerPos() - 1)
                     {
                         case 0:
-                            stack0.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack0.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer0.Text = stackPointerSymbol;
                             break;
                         case 1:
-                            stack1.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack1.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer1.Text = stackPointerSymbol;
                             break;
                         case 2:
-                            stack2.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack2.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer2.Text = stackPointerSymbol;
                             break;
                         case 3:
-                            stack3.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack3.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer3.Text = stackPointerSymbol;
                             break;
                         case 4:
-                            stack4.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack4.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer4.Text = stackPointerSymbol;
                             break;
                         case 5:
-                            stack5.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack5.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer5.Text = stackPointerSymbol;
                             break;
                         case 6:
-                            stack6.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack6.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer6.Text = stackPointerSymbol;
                             break;
                         case 7:
-                            stack7.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack7.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer7.Text = stackPointerSymbol;
                             break;
                         case 8:
-                            stack8.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack8.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer8.Text = stackPointerSymbol;
                             break;
                         case 9:
-                            stack9.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack9.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer9.Text = stackPointerSymbol;
                             break;
                         case 10:
-                            stack10.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack10.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer10.Text = stackPointerSymbol;
                             break;
                         case 11:
-                            stack11.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack11.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer11.Text = stackPointerSymbol;
                             break;
                         case 12:
-                            stack12.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack12.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer12.Text = stackPointerSymbol;
                             break;
                         case 13:
-                            stack13.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack13.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer13.Text = stackPointerSymbol;
                             break;
                         case 14:
-                            stack14.Text = Convert.ToString(algorithmTact.stack.GetStackElement(algorithmTact.stack.GetStackPointerPos() - 1));
+                            stack14.Text = Convert.ToString(transformationTact.stack.GetStackElement(transformationTact.stack.GetStackPointerPos() - 1));
                             SetDefaultStackPointerVisualization();
                             stackPointer14.Text = stackPointerSymbol;
                             break;
                     }
                 }
             }
+        }
+
+        private void tactCalculationButton_Click(object sender, EventArgs e) // Потактовое вычисление постфиксного выражения
+        {
+
+        }
+
+        private void fullCalculationButton_Click(object sender, EventArgs e) // Вычисление постфиксного выражения
+        {
+
+        }
+
+        private void updateCalculationButton_Click(object sender, EventArgs e)
+        {
+            UpdateCalculation();
         }
     }
 }

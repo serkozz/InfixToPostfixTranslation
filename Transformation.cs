@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace AlgebraicExpressionsTranslation
 {
-    class Algorithm
+    public class Transformation
     {
         public Stack stack;
 
-        string inputString;
-        char[] inputStringCharArray;
-        int inputIndex = 0;
-        const char stringEndSymbol = '\0';
+        string infixString;
+        char[] infixStringCharArray;
+        int infixIndex = 0;
+        const char infixStringEndSymbol = '\0';
         const char whiteSpace = ' ';
 
-        string currentInputString; // Для потактового режима вывода (отображение входной строки)
+        string currentInfixString; // Для потактового режима вывода (отображение входной строки)
 
-        string outputString = string.Empty;
-        const byte outputCharArraySize = 200;
-        char[] outputCharArray = new char[200];
-        int outputIndex = 0;
+        string postfixString = string.Empty;
+        const byte postfixCharArraySize = 200;
+        char[] outputCharArray = new char[postfixCharArraySize];
+        int postfixIndex = 0;
 
         string stackString = string.Empty;
 
@@ -30,9 +30,9 @@ namespace AlgebraicExpressionsTranslation
         bool isEnded = false; // Флаг окончания преобразований
         bool isTactButtonPressed = false;
 
-        public Algorithm(string inputString, bool isTactMode)
+        public Transformation(string inputString, bool isTactMode)
         {
-            this.inputString = inputString + stringEndSymbol;
+            this.infixString = inputString + infixStringEndSymbol;
             this.isTactMode = isTactMode;
             this.stack = new Stack();
         }
@@ -61,23 +61,23 @@ namespace AlgebraicExpressionsTranslation
         {
             if (!isTactMode)
             {
-                inputStringCharArray = inputString.ToCharArray();
-                CreatePostfixV2(inputStringCharArray, isTactMode: false);
-                outputString = string.Join(null, outputCharArray);
+                infixStringCharArray = infixString.ToCharArray();
+                CreatePostfix(infixStringCharArray, isTactMode: false);
+                postfixString = string.Join(null, outputCharArray);
             }
             else if (isTactMode)
             {
-                inputStringCharArray = inputString.ToCharArray();
+                infixStringCharArray = infixString.ToCharArray();
 
                 while (true)
                 {
                     if (isTactButtonPressed && !isEnded)
                     {
-                        CreatePostfixV2(inputStringCharArray, isTactMode: true);
-                        currentInputString = string.Join(null, CreateCurrentInputString(inputStringCharArray, inputIndex));
-                        outputString = string.Join(null, outputCharArray);
-                        stackString = string.Join(" ", stack.GetStack()); // Тут было ' '
-                        Console.WriteLine("Input string: " + currentInputString + "\nOutput string: " + outputString + "\nStack: " + stackString + "\nStackPointer: " + stack.GetStackPointerPos()+ "\n");
+                        CreatePostfix(infixStringCharArray, isTactMode: true);
+                        currentInfixString = string.Join(null, CreateCurrentInputString(infixStringCharArray, infixIndex));
+                        postfixString = string.Join(null, outputCharArray);
+                        stackString = string.Join(" ", stack.GetStack());
+                        Console.WriteLine("Input string: " + currentInfixString + "\nOutput string: " + postfixString + "\nStack: " + stackString + "\nStackPointer: " + stack.GetStackPointerPos()+ "\n");
 
                         ReleaseTactButtonPressed();
                     }
@@ -95,24 +95,24 @@ namespace AlgebraicExpressionsTranslation
 
         public string GetOutputString() // Получение выходной строки
         {
-            return outputString;
+            return postfixString;
         }
 
         public string GetInputString() // Получение входной строки
         {
-            return inputString;
+            return infixString;
         }
         public string GetCurrentInputString() // Получение текущей входной строки (которая изменяется при потактовом режиме воспроизведения)
         {
-            return currentInputString;
+            return currentInfixString;
         }
 
-        public byte SymbNumInputStr(char? symbol) // возвращает индекс столбца таблицы решений на основе очередного символа входной строки
+        byte SymbNumInputStr(char? symbol) // возвращает индекс столбца таблицы решений на основе очередного символа входной строки
         {
             string englishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             byte result = 0;
 
-            if (symbol == stringEndSymbol)
+            if (symbol == infixStringEndSymbol)
                 return result = 0;
             else
             {
@@ -159,7 +159,7 @@ namespace AlgebraicExpressionsTranslation
             return result;
         }
 
-        public byte SymbNumInStack() // Возвращает индекс строки таблицы решений на основе символа находящегося на вершине стека
+        byte SymbNumInStack() // Возвращает индекс строки таблицы решений на основе символа находящегося на вершине стека
         {
             byte result = 0;
             char lastStackSymbol = stack.GetStackElement((stack.GetStackPointerPos() - 1));
@@ -205,7 +205,7 @@ namespace AlgebraicExpressionsTranslation
             return result;
         }
 
-        void CreatePostfixV2(char[] inputCharArray, bool isTactMode)
+        void CreatePostfix(char[] inputCharArray, bool isTactMode)
         {
 
             byte[,] decisionTable = new byte[,]
@@ -230,27 +230,27 @@ namespace AlgebraicExpressionsTranslation
             do
             {
                 byte rowIndex = SymbNumInStack();
-                byte columnIndex = SymbNumInputStr(inputCharArray[inputIndex]);
+                byte columnIndex = SymbNumInputStr(inputCharArray[infixIndex]);
 
                 byte decision = decisionTable[rowIndex, columnIndex];
 
                 switch (decision)
                 {
                     case 1:
-                        stack.Push(inputCharArray[inputIndex]);
-                        inputIndex++;
+                        stack.Push(inputCharArray[infixIndex]);
+                        infixIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
                     case 2:
-                        outputCharArray[outputIndex] = stack.Pop();
-                        outputIndex++;
+                        outputCharArray[postfixIndex] = stack.Pop();
+                        postfixIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
                     case 3:
                         stack.DeleteLastStackItem();
-                        inputIndex++;
+                        infixIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
@@ -259,8 +259,8 @@ namespace AlgebraicExpressionsTranslation
                         {
                             while (!stack.IsStackEmpty())
                             {
-                                outputCharArray[outputIndex] = stack.Pop();
-                                outputIndex++;
+                                outputCharArray[postfixIndex] = stack.Pop();
+                                postfixIndex++;
                             }
                         }
                         if (isTactMode)
@@ -273,9 +273,9 @@ namespace AlgebraicExpressionsTranslation
                             isTactAvailable = false;
                         return;
                     case 6:
-                        outputCharArray[outputIndex] = inputCharArray[inputIndex];
-                        outputIndex++;
-                        inputIndex++;
+                        outputCharArray[postfixIndex] = inputCharArray[infixIndex];
+                        postfixIndex++;
+                        infixIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
@@ -286,7 +286,7 @@ namespace AlgebraicExpressionsTranslation
                         return;
                 }
             }
-            while (inputIndex < inputCharArray.Length && isTactAvailable && !isEnded);
+            while (infixIndex < inputCharArray.Length && isTactAvailable && !isEnded);
         }
 
         char[] CreateCurrentInputString(char[] inputStringCharArray, int inputIndex) // Посимвольное отображение изменяющейся в потактовом режиме входной строки

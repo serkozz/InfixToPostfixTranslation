@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AlgebraicExpressionsTranslation
 {
-    class Stack
+    public class Stack
     {
         const byte stackSize = 15;
-        const char whiteSpace = ' ';
+        const string whiteSpace = " ";
         static char[] stack = new char[stackSize];
         byte stackPointer = 1;
 
@@ -35,7 +35,7 @@ namespace AlgebraicExpressionsTranslation
             if (index >= 0)
                 return stack[index];
             else
-                return whiteSpace;
+                return Convert.ToChar(whiteSpace);
         }
 
         public void DeleteLastStackItem() // Удалить элемент на верхушке стека (сдвинуть указатель)
@@ -56,7 +56,7 @@ namespace AlgebraicExpressionsTranslation
                 return stack[stackPointer];
             }
             else
-                return whiteSpace;
+                return Convert.ToChar(whiteSpace);
         }
 
         public void Push(char symbol) // Внести на вершину стека значение (со сдвигом указателя (используется в модельном слое))
