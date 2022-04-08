@@ -30,7 +30,7 @@ namespace AlgebraicExpressionsTranslation
             return temp;
         }
 
-        public char GetStackElement(int index) // Получить элемент стека по индексу
+        public char GetStackElement(int index) // Получить элемент стека по индексу (используется в слое представления)
         {
             if (index >= 0)
                 return stack[index];
@@ -48,7 +48,7 @@ namespace AlgebraicExpressionsTranslation
             return (stackPointer == 0) ? true : false;
         }
 
-        public char Pop() // Извлечь элемент находящийся на верхушке стека
+        public char Pop() // Извлечь элемент находящийся на верхушке стека (со сдвигом указателя (используется в модельном слое))
         {
             if (GetStackPointerPos() > 0)
             {
@@ -59,7 +59,7 @@ namespace AlgebraicExpressionsTranslation
                 return whiteSpace;
         }
 
-        public void Push(char symbol) // Внести на вершину стека значение
+        public void Push(char symbol) // Внести на вершину стека значение (со сдвигом указателя (используется в модельном слое))
         {
             if (stackPointer == stackSize)
             {
