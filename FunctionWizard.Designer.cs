@@ -53,7 +53,6 @@ namespace AlgebraicExpressionsTranslation
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.inputText = new System.Windows.Forms.TextBox();
-            this.dotButton = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.transformButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -61,7 +60,7 @@ namespace AlgebraicExpressionsTranslation
             // cancelButton
             // 
             this.cancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cancelButton.Location = new System.Drawing.Point(547, 178);
+            this.cancelButton.Location = new System.Drawing.Point(565, 244);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(120, 60);
             this.cancelButton.TabIndex = 50;
@@ -72,7 +71,7 @@ namespace AlgebraicExpressionsTranslation
             // enterButton
             // 
             this.enterButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.enterButton.Location = new System.Drawing.Point(547, 112);
+            this.enterButton.Location = new System.Drawing.Point(565, 147);
             this.enterButton.Name = "enterButton";
             this.enterButton.Size = new System.Drawing.Size(120, 60);
             this.enterButton.TabIndex = 49;
@@ -83,7 +82,7 @@ namespace AlgebraicExpressionsTranslation
             // lnButton
             // 
             this.lnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lnButton.Location = new System.Drawing.Point(340, 244);
+            this.lnButton.Location = new System.Drawing.Point(372, 244);
             this.lnButton.Name = "lnButton";
             this.lnButton.Size = new System.Drawing.Size(120, 60);
             this.lnButton.TabIndex = 48;
@@ -94,7 +93,7 @@ namespace AlgebraicExpressionsTranslation
             // sqrtButton
             // 
             this.sqrtButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.sqrtButton.Location = new System.Drawing.Point(340, 178);
+            this.sqrtButton.Location = new System.Drawing.Point(372, 178);
             this.sqrtButton.Name = "sqrtButton";
             this.sqrtButton.Size = new System.Drawing.Size(120, 60);
             this.sqrtButton.TabIndex = 47;
@@ -105,7 +104,7 @@ namespace AlgebraicExpressionsTranslation
             // cosButton
             // 
             this.cosButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cosButton.Location = new System.Drawing.Point(340, 112);
+            this.cosButton.Location = new System.Drawing.Point(372, 112);
             this.cosButton.Name = "cosButton";
             this.cosButton.Size = new System.Drawing.Size(120, 60);
             this.cosButton.TabIndex = 46;
@@ -116,7 +115,7 @@ namespace AlgebraicExpressionsTranslation
             // sinButton
             // 
             this.sinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.sinButton.Location = new System.Drawing.Point(340, 46);
+            this.sinButton.Location = new System.Drawing.Point(372, 46);
             this.sinButton.Name = "sinButton";
             this.sinButton.Size = new System.Drawing.Size(120, 60);
             this.sinButton.TabIndex = 45;
@@ -321,17 +320,6 @@ namespace AlgebraicExpressionsTranslation
             this.inputText.Size = new System.Drawing.Size(756, 29);
             this.inputText.TabIndex = 51;
             // 
-            // dotButton
-            // 
-            this.dotButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dotButton.Location = new System.Drawing.Point(78, 310);
-            this.dotButton.Name = "dotButton";
-            this.dotButton.Size = new System.Drawing.Size(60, 60);
-            this.dotButton.TabIndex = 52;
-            this.dotButton.Text = ".";
-            this.dotButton.UseVisualStyleBackColor = true;
-            this.dotButton.Click += new System.EventHandler(this.valueButton_Click);
-            // 
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -346,7 +334,7 @@ namespace AlgebraicExpressionsTranslation
             // transformButton
             // 
             this.transformButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.transformButton.Location = new System.Drawing.Point(466, 46);
+            this.transformButton.Location = new System.Drawing.Point(528, 46);
             this.transformButton.Name = "transformButton";
             this.transformButton.Size = new System.Drawing.Size(201, 60);
             this.transformButton.TabIndex = 54;
@@ -358,10 +346,9 @@ namespace AlgebraicExpressionsTranslation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 375);
+            this.ClientSize = new System.Drawing.Size(784, 305);
             this.Controls.Add(this.transformButton);
             this.Controls.Add(this.button10);
-            this.Controls.Add(this.dotButton);
             this.Controls.Add(this.inputText);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.enterButton);
@@ -420,7 +407,6 @@ namespace AlgebraicExpressionsTranslation
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox inputText;
-        private System.Windows.Forms.Button dotButton;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button transformButton;
     }
