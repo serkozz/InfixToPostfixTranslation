@@ -16,6 +16,9 @@ namespace AlgebraicExpressionsTranslation
         string currentInfixString;
         string postfixString;
 
+        Dictionary<string, string> numberMeanings;
+        Dictionary<string, string> functionMeanings;
+
         const string stackPointerSymbol = "<";
         const string whiteSpace = " ";
 
@@ -49,16 +52,29 @@ namespace AlgebraicExpressionsTranslation
             functionWizard.FormClosing += (fw_sender, fw_e) =>
             {
                 //Обновляем переменную основной формы при закрытии
-                if (functionWizard.inputString.Length != 0)
+                if (functionWizard.GetInputString().Length != 0)
                 {
-                    immutableInfixString = functionWizard.inputString;
-                    currentInfixString = functionWizard.inputString;
-
+                    immutableInfixString = functionWizard.GetInputString();
+                    currentInfixString = functionWizard.GetInputString();
                     immutableInfixText.Text = immutableInfixString;
 
+                    numberMeanings = functionWizard.GetNumberMeanings(); // Возвращаем пару словарь пар для переменных (замена-заменяемое)
+                    functionMeanings = functionWizard.GetFunctionMeanings(); // Возвращаем пару словарь пар для функций (замена-заменяемое)
+
+                    foreach (KeyValuePair<string, string> keyValuePair in numberMeanings)
+                    {
+                        string numberMeaningsString = "Число: " + keyValuePair.Value + " = " + keyValuePair.Key;
+                        numbersMeaningsListBox.Items.Add(numberMeaningsString);
+                    }
+                    foreach (KeyValuePair<string, string> keyValuePair in functionMeanings)
+                    {
+                        string functionMeaningsString = "Функция: " + keyValuePair.Value + " = " + keyValuePair.Key;
+                        functionsMeaningsListBox.Items.Add(functionMeaningsString);
+                    }
                     UpdateAlgorithm();
                 }
             };
+
             functionWizard.Show();
         }
 
@@ -89,14 +105,16 @@ namespace AlgebraicExpressionsTranslation
                 fullAlgorithmButton.Enabled = true;
                 fullCalculationButton.Enabled = true;
                 tactCalculationButton.Enabled = true;
-                updateCalculationButton.Enabled = true;
+                enterCalculationButton.Enabled = true;
+                functionWizardButton.Enabled = true;
             }
             else
             {
                 fullAlgorithmButton.Enabled = false;
                 fullCalculationButton.Enabled = false;
                 tactCalculationButton.Enabled = false;
-                updateCalculationButton.Enabled = false;
+                enterCalculationButton.Enabled = false;
+                functionWizardButton.Enabled = false;
             }
 
             postfixString = transformationTact.GetOutputString();
