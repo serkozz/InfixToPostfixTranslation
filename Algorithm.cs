@@ -8,6 +8,8 @@ namespace AlgebraicExpressionsTranslation
 {
     class Algorithm
     {
+        public Stack stack;
+
         string inputString;
         char[] inputStringCharArray;
         int inputIndex = 0;
@@ -21,10 +23,7 @@ namespace AlgebraicExpressionsTranslation
         char[] outputCharArray = new char[200];
         int outputIndex = 0;
 
-        const byte stackSize = 15;
-        char[] stack = new char[stackSize];
         string stackString = string.Empty;
-        byte stackPointer = 1;
 
         bool isTactMode = false; // Определяет работу метода в пошаговом режиме
         bool isTactAvailable = true; // Флаг доступности очередного такта в потактовом режиме
@@ -35,6 +34,7 @@ namespace AlgebraicExpressionsTranslation
         {
             this.inputString = inputString + stringEndSymbol;
             this.isTactMode = isTactMode;
+            this.stack = new Stack();
         }
         
         public void SetTactButtonPressed() // Метод, вызываемый извне для модификации переменной отвечающей за потактовое продвижение алгоритма
@@ -76,8 +76,8 @@ namespace AlgebraicExpressionsTranslation
                         CreatePostfixV2(inputStringCharArray, isTactMode: true);
                         currentInputString = string.Join(null, CreateCurrentInputString(inputStringCharArray, inputIndex));
                         outputString = string.Join(null, outputCharArray);
-                        stackString = string.Join(" ", stack); // Тут было ' '
-                        Console.WriteLine("Input string: " + currentInputString + "\nOutput string: " + outputString + "\nStack: " + stackString + "\nStackPointer: " + stackPointer + "\n");
+                        stackString = string.Join(" ", stack.GetStack()); // Тут было ' '
+                        Console.WriteLine("Input string: " + currentInputString + "\nOutput string: " + outputString + "\nStack: " + stackString + "\nStackPointer: " + stack.GetStackPointerPos()+ "\n");
 
                         ReleaseTactButtonPressed();
                     }
@@ -105,51 +105,6 @@ namespace AlgebraicExpressionsTranslation
         public string GetCurrentInputString() // Получение текущей входной строки (которая изменяется при потактовом режиме воспроизведения)
         {
             return currentInputString;
-        }
-
-        public int GetStackPointerPos() // Получение позиции стекпоинтера
-        {
-            return stackPointer;
-        }
-
-        public char GetStackElement(int index) // Получить элемент стека по индексу
-        {
-            if (index >= 0)
-                return stack[index];
-            else
-                return whiteSpace;
-        }
-
-        public void DeleteLastStackItem() // Удалить элемент на верхушке стека (сдвинуть указатель)
-        {
-            stackPointer--;
-        }
-
-        bool IsStackEmpty() // Возвращает true при пустом стеке, else false
-        {
-            return (stackPointer == 0) ? true : false;
-        }
-
-        char Pop() // Извлечь элемент находящийся на верхушке стека
-        {
-            if (GetStackPointerPos() > 0)
-            {
-                stackPointer--;
-                return stack[stackPointer];
-            }
-            else
-                return whiteSpace;
-        }
-
-        void Push(char symbol) // Внести на вершину стека значение
-        {
-            if (stackPointer == stackSize)
-            {
-                System.Windows.Forms.MessageBox.Show("Переполнение стека");
-                return;
-            }
-            stack[stackPointer] = symbol;
-            stackPointer++;
         }
 
         public byte SymbNumInputStr(char? symbol) // возвращает индекс столбца таблицы решений на основе очередного символа входной строки
@@ -207,7 +162,7 @@ namespace AlgebraicExpressionsTranslation
         public byte SymbNumInStack() // Возвращает индекс строки таблицы решений на основе символа находящегося на вершине стека
         {
             byte result = 0;
-            char lastStackSymbol = GetStackElement(GetStackPointerPos() - 1);
+            char lastStackSymbol = stack.GetStackElement((stack.GetStackPointerPos() - 1));
 
             if (lastStackSymbol != whiteSpace)
             {
@@ -282,29 +237,29 @@ namespace AlgebraicExpressionsTranslation
                 switch (decision)
                 {
                     case 1:
-                        Push(inputCharArray[inputIndex]);
+                        stack.Push(inputCharArray[inputIndex]);
                         inputIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
                     case 2:
-                        outputCharArray[outputIndex] = Pop();
+                        outputCharArray[outputIndex] = stack.Pop();
                         outputIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
                     case 3:
-                        DeleteLastStackItem();
+                        stack.DeleteLastStackItem();
                         inputIndex++;
                         if (isTactMode)
                             isTactAvailable = false;
                         break;
                     case 4:
-                        if (!IsStackEmpty())
+                        if (!stack.IsStackEmpty())
                         {
-                            while (!IsStackEmpty())
+                            while (!stack.IsStackEmpty())
                             {
-                                outputCharArray[outputIndex] = Pop();
+                                outputCharArray[outputIndex] = stack.Pop();
                                 outputIndex++;
                             }
                         }
