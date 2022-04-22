@@ -5,22 +5,19 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AlgebraicExpressionsTranslation
 {
-    public partial class FunctionWizard : Form
+    public partial class SimpleFunctionWizard : Form
     {
         string inputString = String.Empty;
-
-        string pattern = @"\d{1,}"; // Паттерн для поиска числового значения
 
         Dictionary<string, string> numbersMeanings = new Dictionary<string, string>();
         Dictionary<string, string> functionMeanings = new Dictionary<string, string>();
 
-        public FunctionWizard()
+        public SimpleFunctionWizard()
         {
             InitializeComponent();
         }
@@ -28,11 +25,6 @@ namespace AlgebraicExpressionsTranslation
         public string GetInputString() // Получить введенную строку
         {
             return inputString;
-        }
-
-        public Dictionary<string, string> GetNumberMeanings() // Возвращает словарь комбинаций (замена-заменяемое_число)
-        {
-            return numbersMeanings;
         }
 
         public Dictionary<string, string> GetFunctionMeanings() // Возвращает словарь комбинаций (замена-заменяемое_число)
@@ -51,7 +43,7 @@ namespace AlgebraicExpressionsTranslation
 
                                         "(+", "(-", "(*", "(/",
                                         "+)", "-)", "*)", "/)",
-            
+
                                         "sinsin", "sincos", "sinsqrt", "sinln", "sin+", "sin-", "sin*", "sin/", "sin)",
                                         "cossin", "coscos", "cossqrt", "cosln", "cos+", "cos-", "cos*", "cos/", "cos)",
                                         "sqrtsin", "sqrtcos", "sqrtsqrt", "sqrtln", "sqrt+", "sqrt-", "sqrt*", "sqrt/", "sqrt)",
@@ -92,33 +84,6 @@ namespace AlgebraicExpressionsTranslation
 
             return transformedString;
         }
-
-        public string TransformToA2Algorithm(string inputString)
-        {
-            string transformedString = inputString;
-            char[] englishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-            int key = 1;
-
-            Dictionary<int, string> alphabetA2 = new Dictionary<int, string>();
-
-            foreach (char value in englishAlphabet) // Сформировали словарь из индекса и соответствующей ему буквы
-            {
-                alphabetA2.Add(key, value.ToString());
-                key++;
-            }
-
-            Regex rgx = new Regex(pattern);
-
-            foreach (Match match in rgx.Matches(transformedString)) // Замена совпадений в исходной строке
-            {
-                transformedString = transformedString.Replace(match.Value, alphabetA2.ElementAt(match.Index).Value);
-                if (!numbersMeanings.ContainsKey(match.Value))
-                    numbersMeanings.Add(match.Value, alphabetA2.ElementAt(match.Index).Value); // value - число, key - замена
-            }
-
-            return transformedString;
-        }
-
 
         private void valueButton_Click(object sender, EventArgs e) // Обработчик кнопок, вводящих значения
         {
@@ -166,7 +131,6 @@ namespace AlgebraicExpressionsTranslation
             else
             {
                 inputText.Text = TransformToA1Algorithm(inputText.Text);
-                inputText.Text = TransformToA2Algorithm(inputText.Text);
             }
 
             inputString = inputText.Text;
@@ -176,6 +140,7 @@ namespace AlgebraicExpressionsTranslation
                 MessageBox.Show("Обнаружена синтаксическая ошибка, проверьте введеную функцию");
                 inputString = String.Empty;
             }
+
             else
             {
                 Close();

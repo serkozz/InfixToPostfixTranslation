@@ -10,14 +10,15 @@ using System.Windows.Forms;
 
 namespace AlgebraicExpressionsTranslation
 {
-    public partial class MainForm : Form
+    public partial class SimpleMainForm : Form
     {
         string immutableInfixString;
         string currentInfixString;
         string postfixString;
 
-        Dictionary<string, string> numberMeanings;
+        Dictionary<char, double> numberMeanings = new Dictionary<char, double>();
         Dictionary<string, string> functionMeanings;
+        List<TextBox> textBoxesList = new List<TextBox>();
 
         const string stackPointerSymbol = "<";
         const string whiteSpace = " ";
@@ -28,12 +29,14 @@ namespace AlgebraicExpressionsTranslation
         Calculation calculationFull;
         Calculation calculationTact;
 
-        public MainForm()
+        bool valuesParsed = false;
+
+        public SimpleMainForm()
         {
             InitializeComponent();
         }
 
-        private void UpdateAlgorithm()
+        private void UpdateTransformation()
         {
             transformationTact = new Transformation(immutableInfixString, isTactMode: true);
             transformationFull = new Transformation(immutableInfixString, isTactMode: false);
@@ -47,37 +50,32 @@ namespace AlgebraicExpressionsTranslation
 
         private void functionWizardButton_Click(object sender, EventArgs e) // Обработчик мастера функций
         {
-            FunctionWizard functionWizard = new FunctionWizard();
-                      functionWizard.FormClosing += (fw_sender, fw_e) =>
-                        {
-                            //Обновляем переменную основной формы при закрытии
-                            if (functionWizard.GetInputString().Length != 0)
-                            {
-                                immutableInfixString = functionWizard.GetInputString();
-                                currentInfixString = functionWizard.GetInputString();
-                                immutableInfixText.Text = immutableInfixString;
+            SimpleFunctionWizard simpleFunctionWizard = new SimpleFunctionWizard();
 
-                                numbersMeaningsListBox.Items.Clear();
-                                functionsMeaningsListBox.Items.Clear();
+            simpleFunctionWizard.FormClosing += (sfw_sender, sfw_e) =>
+            {
+                //Обновляем переменную основной формы при закрытии
+                if (simpleFunctionWizard.GetInputString().Length != 0)
+                {
+                    immutableInfixString = simpleFunctionWizard.GetInputString();
+                    currentInfixString = simpleFunctionWizard.GetInputString();
+                    immutableInfixText.Text = immutableInfixString;
 
-                                numberMeanings = functionWizard.GetNumberMeanings(); // Возвращаем пару словарь пар для переменных (замена-заменяемое)
-                                functionMeanings = functionWizard.GetFunctionMeanings(); // Возвращаем пару словарь пар для функций (замена-заменяемое)
+                    functionsMeaningsListBox.Items.Clear();
 
-                                foreach (KeyValuePair<string, string> keyValuePair in numberMeanings)
-                                {
-                                    string numberMeaningsString = "Число: " + keyValuePair.Value + " = " + keyValuePair.Key;
-                                    numbersMeaningsListBox.Items.Add(numberMeaningsString);
-                                }
+                    functionMeanings = simpleFunctionWizard.GetFunctionMeanings(); // Возвращаем пару словарь пар для функций (замена-заменяемое)
 
-                                foreach (KeyValuePair<string, string> keyValuePair in functionMeanings)
-                                {
-                                    string functionMeaningsString = "Функция: " + keyValuePair.Value + " = " + keyValuePair.Key;
-                                    functionsMeaningsListBox.Items.Add(functionMeaningsString);
-                                }
-                                UpdateAlgorithm();
-                            }
-                        };
-            functionWizard.Show();
+                    foreach (KeyValuePair<string, string> keyValuePair in functionMeanings)
+                    {
+                        string functionMeaningsString = "Функция: " + keyValuePair.Value + " = " + keyValuePair.Key;
+                        functionsMeaningsListBox.Items.Add(functionMeaningsString);
+                    }
+
+                    UpdateTransformation();
+                    valuesParsed = false;
+                }
+            };
+            simpleFunctionWizard.Show();
         }
 
         private void fullAlgorithmButton_Click(object sender, EventArgs e)
@@ -245,7 +243,54 @@ namespace AlgebraicExpressionsTranslation
 
         private void updateCalculationButton_Click(object sender, EventArgs e)
         {
+            AddTextBoxesToList();
+            TryParseDouble();
             UpdateCalculation();
+        }
+
+        private void Value_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8 || e.KeyChar == 46 || e.KeyChar == 45 || e.KeyChar == 101) // запрет на ввод всего кроме BackSp, ., -, e
+                return;
+            else
+                e.Handled = true;
+        }
+    
+        private void TryParseDouble()
+        {
+            double value;
+            if (!valuesParsed)
+            {
+                foreach (TextBox textBox in textBoxesList)
+                {
+                    if (Double.TryParse(textBox.Text, out value))
+                    {
+                        valuesParsed = true;
+                        Console.WriteLine("'{0}' --> {1}", textBox.Name, value);
+                        numberMeanings.Add(Convert.ToChar(textBox.Name), value);
+                    }
+                    else
+                    {
+                        valuesParsed = false;
+                        MessageBox.Show("Введены неверные значения!");
+                        return;
+                    }
+                }
+            }
+        }
+    
+        private void AddTextBoxesToList()
+        {
+            textBoxesList.Add(A);
+            textBoxesList.Add(B);
+            textBoxesList.Add(C);
+            textBoxesList.Add(D);
+            textBoxesList.Add(E);
+            textBoxesList.Add(F);
+            textBoxesList.Add(G);
+            textBoxesList.Add(H);
+            textBoxesList.Add(I);
+            textBoxesList.Add(J);
         }
     }
 }

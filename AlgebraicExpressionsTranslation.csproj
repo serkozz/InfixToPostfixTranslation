@@ -46,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimpleFunctionWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleFunctionWizard.Designer.cs">
+      <DependentUpon>SimpleFunctionWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SimpleMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleMainForm.Designer.cs">
+      <DependentUpon>SimpleMainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Transformation.cs" />
     <Compile Include="Calculation.cs" />
     <Compile Include="Stack.cs" />
@@ -78,6 +90,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SimpleFunctionWizard.resx">
+      <DependentUpon>SimpleFunctionWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleMainForm.resx">
+      <DependentUpon>SimpleMainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
