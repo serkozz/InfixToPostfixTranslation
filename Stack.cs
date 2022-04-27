@@ -10,8 +10,29 @@ namespace AlgebraicExpressionsTranslation
     {
         const byte stackSize = 15;
         const string whiteSpace = " ";
-        static char[] stack = new char[stackSize];
+        char[] transformationStack = new char[stackSize]; // был статик и пустой конструктор
+        double[] calculationStack = new double[stackSize]; // был статик и пустой конструктор
         byte stackPointer = 1;
+        
+        public enum StackType
+        {
+            TransformationStack,
+            CalculationStack
+        }
+        public Stack(StackType stackType)
+        {
+            if (stackType == StackType.CalculationStack)
+            {
+                double[] calculationStack = new double[stackSize];
+                this.calculationStack = calculationStack;
+            }
+
+            if (stackType == StackType.TransformationStack)
+            {
+                char[] transformationStack = new char[stackSize];
+                this.transformationStack = transformationStack;
+            }
+        }
 
         public int GetStackPointerPos() // Получение позиции стекпоинтера
         {
@@ -24,7 +45,7 @@ namespace AlgebraicExpressionsTranslation
 
             for (int i = 0; i < stackSize; i++)
             {
-                temp[i] = stack[i];
+                temp[i] = transformationStack[i];
             }
 
             return temp;
@@ -33,14 +54,17 @@ namespace AlgebraicExpressionsTranslation
         public char GetStackElement(int index) // Получить элемент стека по индексу (используется в слое представления)
         {
             if (index >= 0)
-                return stack[index];
+                return transformationStack[index];
             else
                 return Convert.ToChar(whiteSpace);
         }
 
-        public void DeleteLastStackItem() // Удалить элемент на верхушке стека (сдвинуть указатель)
+        public void DeleteLastStackItem(int times) // Удалить элемент на верхушке стека (сдвинуть указатель)
         {
-            stackPointer--;
+            for (int i = 0; i < times; i++)
+            {
+                stackPointer--;
+            }
         }
 
         public bool IsStackEmpty() // Возвращает true при пустом стеке, else false
@@ -53,10 +77,21 @@ namespace AlgebraicExpressionsTranslation
             if (GetStackPointerPos() > 0)
             {
                 stackPointer--;
-                return stack[stackPointer];
+                return transformationStack[stackPointer];
             }
             else
                 return Convert.ToChar(whiteSpace);
+        }
+        
+        public double Pop(bool plug) // Извлечь элемент находящийся на верхушке стека (со сдвигом указателя (заглушка не используется))
+        {
+            if (GetStackPointerPos() > 0)
+            {
+                stackPointer--;
+                return calculationStack[stackPointer];
+            }
+            else
+                return 0;
         }
 
         public void Push(char symbol) // Внести на вершину стека значение (со сдвигом указателя (используется в модельном слое))
@@ -66,7 +101,18 @@ namespace AlgebraicExpressionsTranslation
                 System.Windows.Forms.MessageBox.Show("Переполнение стека");
                 return;
             }
-            stack[stackPointer] = symbol;
+            transformationStack[stackPointer] = symbol;
+            stackPointer++;
+        }
+
+        public void Push(double value) // Внести на вершину стека значение (перегрузка для вычисления постфикса)
+        {
+            if (stackPointer == stackSize)
+            {
+                System.Windows.Forms.MessageBox.Show("Переполнение стека");
+                return;
+            }
+            calculationStack[stackPointer] = value;
             stackPointer++;
         }
     }

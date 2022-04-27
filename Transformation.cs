@@ -34,7 +34,7 @@ namespace AlgebraicExpressionsTranslation
         {
             this.infixString = inputString + infixStringEndSymbol;
             this.isTactMode = isTactMode;
-            this.stack = new Stack();
+            this.stack = new Stack(Stack.StackType.TransformationStack);
         }
         
         public void SetTactButtonPressed() // Метод, вызываемый извне для модификации переменной отвечающей за потактовое продвижение алгоритма
@@ -249,7 +249,7 @@ namespace AlgebraicExpressionsTranslation
                             isTactAvailable = false;
                         break;
                     case 3:
-                        stack.DeleteLastStackItem();
+                        stack.DeleteLastStackItem(times: 1);
                         infixIndex++;
                         if (isTactMode)
                             isTactAvailable = false;

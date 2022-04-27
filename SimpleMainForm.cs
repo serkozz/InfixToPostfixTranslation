@@ -15,10 +15,12 @@ namespace AlgebraicExpressionsTranslation
         string immutableInfixString;
         string currentInfixString;
         string postfixString;
+        string currentPostfixString;
+        string resultString;
 
-        Dictionary<char, double> numberMeanings = new Dictionary<char, double>();
-        Dictionary<string, string> functionMeanings;
-        List<TextBox> textBoxesList = new List<TextBox>();
+        Dictionary<char, double> numberMeanings; // {'A' "10"}
+        Dictionary<string, string> functionMeanings; // {"a" "sin"}
+        List<TextBox> textBoxesList;
 
         const string stackPointerSymbol = "<";
         const string whiteSpace = " ";
@@ -29,11 +31,13 @@ namespace AlgebraicExpressionsTranslation
         Calculation calculationFull;
         Calculation calculationTact;
 
-        bool valuesParsed = false;
-
         public SimpleMainForm()
         {
             InitializeComponent();
+
+            numberMeanings = new Dictionary<char, double>();
+            functionMeanings = new Dictionary<string, string>();
+            textBoxesList = new List<TextBox>();
         }
 
         private void UpdateTransformation()
@@ -44,8 +48,8 @@ namespace AlgebraicExpressionsTranslation
 
         private void UpdateCalculation()
         {
-            //calculationTact = new Calculation(postfixString, isTactMode: true);
-            //calculationFull = new Calculation(postfixString, isTactMode: false);
+            calculationTact = new Calculation(postfixString, numberMeanings, functionMeanings, isTactMode: true);
+            calculationFull = new Calculation(postfixString, numberMeanings, functionMeanings, isTactMode: false);
         }
 
         private void functionWizardButton_Click(object sender, EventArgs e) // Обработчик мастера функций
@@ -72,7 +76,6 @@ namespace AlgebraicExpressionsTranslation
                     }
 
                     UpdateTransformation();
-                    valuesParsed = false;
                 }
             };
             simpleFunctionWizard.Show();
@@ -233,17 +236,60 @@ namespace AlgebraicExpressionsTranslation
 
         private void tactCalculationButton_Click(object sender, EventArgs e) // Потактовое вычисление постфиксного выражения
         {
+            /*if (immutableInfixString == null)
+                return;
 
+            transformationTact.SetTactButtonPressed();
+
+            VisualizeStack();
+
+            transformationTact.General();
+
+            if (transformationTact.GetEndFlag())
+            {
+                fullAlgorithmButton.Enabled = true;
+                fullCalculationButton.Enabled = true;
+                tactCalculationButton.Enabled = true;
+                enterCalculationButton.Enabled = true;
+                functionWizardButton.Enabled = true;
+            }
+            else
+            {
+                fullAlgorithmButton.Enabled = false;
+                fullCalculationButton.Enabled = false;
+                tactCalculationButton.Enabled = false;
+                enterCalculationButton.Enabled = false;
+                functionWizardButton.Enabled = false;
+            }
+
+            postfixString = transformationTact.GetOutputString();
+            currentInfixString = transformationTact.GetCurrentInputString();
+
+            postfixText.Text = postfixString;
+            infixText.Text = currentInfixString;*/
         }
 
         private void fullCalculationButton_Click(object sender, EventArgs e) // Вычисление постфиксного выражения
         {
+            if (postfixString == null)
+                return;
+            else
+            {
+                calculationFull.General();
+
+                resultString = calculationFull.GetResultString();
+                resultText.Text = resultString;
+            }
 
         }
 
         private void updateCalculationButton_Click(object sender, EventArgs e)
         {
+            ClearTextBoxesList();
             AddTextBoxesToList();
+
+            ClearDictionaries();
+
             TryParseDouble();
             UpdateCalculation();
         }
@@ -255,30 +301,21 @@ namespace AlgebraicExpressionsTranslation
             else
                 e.Handled = true;
         }
-    
+
         private void TryParseDouble()
         {
             double value;
-            if (!valuesParsed)
+
+            foreach (TextBox textBox in textBoxesList)
             {
-                foreach (TextBox textBox in textBoxesList)
+                if (Double.TryParse(textBox.Text, out value))
                 {
-                    if (Double.TryParse(textBox.Text, out value))
-                    {
-                        valuesParsed = true;
-                        Console.WriteLine("'{0}' --> {1}", textBox.Name, value);
-                        numberMeanings.Add(Convert.ToChar(textBox.Name), value);
-                    }
-                    else
-                    {
-                        valuesParsed = false;
-                        MessageBox.Show("Введены неверные значения!");
-                        return;
-                    }
+                    Console.WriteLine("'{0}' --> {1}", textBox.Name, value);
+                    numberMeanings.Add(Convert.ToChar(textBox.Name), value);
                 }
             }
         }
-    
+
         private void AddTextBoxesToList()
         {
             textBoxesList.Add(A);
@@ -291,6 +328,17 @@ namespace AlgebraicExpressionsTranslation
             textBoxesList.Add(H);
             textBoxesList.Add(I);
             textBoxesList.Add(J);
+        }
+
+        private void ClearDictionaries()
+        {
+            numberMeanings.Clear();
+            functionMeanings.Clear();
+        }
+
+        private void ClearTextBoxesList()
+        {
+            textBoxesList.Clear();
         }
     }
 }
