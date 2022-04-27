@@ -92,7 +92,7 @@ namespace AlgebraicExpressionsTranslation
                         CalculatePostfix(postfixStringCharArray, isTactMode: true);
                         currentPostfixString = string.Join(null, CreateCurrentPostfixString(postfixStringCharArray, postfixIndex));
                         resultString = result.ToString();
-                        stackString = string.Join(" ", stack.GetStack());
+                        stackString = string.Join(" ", stack.GetStack(true));
                         Console.WriteLine("Input string: " + currentPostfixString + "\nOutput string: " + resultString + "\nStack: " + stackString + "\nStackPointer: " + stack.GetStackPointerPos() + "\n");
 
                         ReleaseTactButtonPressed();
@@ -107,19 +107,6 @@ namespace AlgebraicExpressionsTranslation
                         break;
                 }
             }
-        }
-
-        public char[] CreateCurrentPostfixString(char[] postfixStringCharArray, int postfixIndex)
-        {
-            List<char> currentPostfixString = new List<char>();
-            currentPostfixString.Clear();
-
-            for (int i = postfixStringCharArray.Length - 1; i > postfixIndex - 1; i--)
-            {
-                currentPostfixString.Add(postfixStringCharArray[i]);
-            }
-            currentPostfixString.Reverse();
-            return currentPostfixString.ToArray();
         }
 
         public void CalculatePostfix(char[] postfixCharArray, bool isTactMode)
@@ -252,6 +239,19 @@ namespace AlgebraicExpressionsTranslation
                 }
             }
             while (postfixIndex < postfixCharArray.Length && isTactAvailable && !isEnded);
+        }
+
+        public char[] CreateCurrentPostfixString(char[] postfixStringCharArray, int postfixIndex)
+        {
+            List<char> currentPostfixString = new List<char>();
+            currentPostfixString.Clear();
+
+            for (int i = postfixStringCharArray.Length - 1; i > postfixIndex - 1; i--)
+            {
+                currentPostfixString.Add(postfixStringCharArray[i]);
+            }
+            currentPostfixString.Reverse();
+            return currentPostfixString.ToArray();
         }
     }
 }

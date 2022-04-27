@@ -51,6 +51,18 @@ namespace AlgebraicExpressionsTranslation
             return temp;
         }
 
+        public double[] GetStack(bool plug) // Возвращает стек (заглушка для дифференциации методов)
+        {
+            double[] temp = new double[stackSize];
+
+            for (int i = 0; i < stackSize; i++)
+            {
+                temp[i] = calculationStack[i];
+            }
+
+            return temp;
+        }
+
         public char GetStackElement(int index) // Получить элемент стека по индексу (используется в слое представления)
         {
             if (index >= 0)
