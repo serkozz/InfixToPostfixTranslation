@@ -125,7 +125,6 @@ namespace AlgebraicExpressionsTranslation
         public void CalculatePostfix(char[] postfixCharArray, bool isTactMode)
         {
             byte decision = 0;
-
             double value = 0;
             double tempResult = 0;
             /*          1 – если входящий элемент число, добавляем его в стек;
@@ -137,105 +136,24 @@ namespace AlgebraicExpressionsTranslation
             do
             {
                 /// 1
-
                 if (numberMeanings.ContainsKey(postfixCharArray[postfixIndex]))
                 {
                     decision = 1;
-                    /*
-                                        double value = numberMeanings[postfixCharArray[postfixIndex]];
-                                        Console.WriteLine("--- CalculationStackValueParsed: " + value + " ---");
-                                        stack.Push(value);
-                                        postfixIndex++;
-                                        break;*/
                 }
-
                 /// 2
-
                 else if (mathOperations.Contains(postfixCharArray[postfixIndex]))
                 {
                     decision = 2;
-                    /*
-                                        char operation = postfixCharArray[postfixIndex];
-                                        double firstOperator = stack.GetStackElement((stack.GetStackPointerPos() - 2));
-                                        double secondOperator = stack.GetStackElement((stack.GetStackPointerPos() - 1));
-                                        double result = 0;
-
-                                        switch (operation)
-                                        {
-                                            case '+':
-                                                result = firstOperator + secondOperator;
-                                                break;
-                                            case '-':
-                                                result = firstOperator - secondOperator;
-                                                break;
-                                            case '*':
-                                                result = firstOperator * secondOperator;
-                                                break;
-                                            case '/':
-                                                result = firstOperator / secondOperator;
-                                                break;
-                                            case '^':
-                                                result = Math.Pow(firstOperator, secondOperator);
-                                                break;
-                                        }
-
-                                        stack.DeleteLastStackItem(times: 2);
-                                        stack.Push(result);
-                                        postfixIndex++;*/
                 }
-
                 /// 3
-
                 else if (functionMeanings.ContainsKey(postfixCharArray[postfixIndex].ToString()))
                 {
                     decision = 3;
-                    /*
-                                        string function = functionMeanings[postfixCharArray[postfixIndex].ToString()];
-                                        double value = stack.Pop(true); // В параметры передана заглушка, которая различает перегрузки метода stack.Pop()
-                                        double result = 0;
-
-                                        switch (function)
-                                        {
-                                            case "a": // sin
-                                                result = Math.Sin(value);
-                                                break;
-                                            case "b": // cos
-                                                result = Math.Cos(value);
-                                                break;
-                                            case "c": // sqrt
-                                                if (value >= 0)
-                                                    result = Math.Sqrt(value);
-                                                else
-                                                {
-                                                    System.Windows.Forms.MessageBox.Show("Недопустимое подкоренное выражение!");
-                                                    return;
-                                                }
-                                                break;
-                                            case "d": // ln
-                                                if (value > 0)
-                                                    result = Math.Log(value);
-                                                else if (value == 0)
-                                                    result = Double.PositiveInfinity;
-                                                else
-                                                {
-                                                    System.Windows.Forms.MessageBox.Show("Невозможно найти натуральный логарифм от заданного числа!");
-                                                    return;
-                                                }
-                                                break;
-                                        }
-
-                                        stack.Push(result);
-                                        postfixIndex++;*/
                 }
-
                 /// 4
-
                 else if (postfixCharArray[postfixIndex] == postfixStringEndSymbol)
                 {
                     decision = 4;
-
-                    /*                    result = stack.Pop(true);
-                                        return;*/
                 }
 
                 switch (decision)
@@ -251,8 +169,8 @@ namespace AlgebraicExpressionsTranslation
 
                     case 2:
                         char operation = postfixCharArray[postfixIndex];
-                        double firstOperator = stack.GetStackElement((stack.GetStackPointerPos() - 2));
-                        double secondOperator = stack.GetStackElement((stack.GetStackPointerPos() - 1));
+                        double firstOperator = stack.GetStackElement((stack.GetStackPointerPos() - 2), true); // В параметры передана заглушка, которая различает перегрузки метода stack.GetStackElement(int index)
+                        double secondOperator = stack.GetStackElement((stack.GetStackPointerPos() - 1), true);
                         tempResult = 0;
 
                         switch (operation)

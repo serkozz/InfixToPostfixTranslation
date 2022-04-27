@@ -10,8 +10,8 @@ namespace AlgebraicExpressionsTranslation
     {
         const byte stackSize = 15;
         const string whiteSpace = " ";
-        char[] transformationStack = new char[stackSize]; // был статик и пустой конструктор
-        double[] calculationStack = new double[stackSize]; // был статик и пустой конструктор
+        char[] transformationStack; // был статик и пустой конструктор
+        double[] calculationStack; // был статик и пустой конструктор
         byte stackPointer = 1;
         
         public enum StackType
@@ -57,6 +57,13 @@ namespace AlgebraicExpressionsTranslation
                 return transformationStack[index];
             else
                 return Convert.ToChar(whiteSpace);
+        }
+        public double GetStackElement(int index, bool plug) // Получить элемент стека по индексу (заглушка дифференцирует перегрузки методов)
+        {
+            if (index >= 0)
+                return calculationStack[index];
+            else
+                return 0;
         }
 
         public void DeleteLastStackItem(int times) // Удалить элемент на верхушке стека (сдвинуть указатель)
