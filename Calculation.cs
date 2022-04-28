@@ -9,8 +9,8 @@ namespace AlgebraicExpressionsTranslation
     public class Calculation
     {
         public Stack stack; // этот стек отличен от стека в Transformation
-        Dictionary<char, double> numberMeanings;
-        Dictionary<string, string> functionMeanings;
+        Dictionary<char, double> numberMeanings = new Dictionary<char, double>();
+        Dictionary<string, string> functionMeanings = new Dictionary<string, string>();
 
         string stackString;
         string postfixString;
@@ -189,18 +189,23 @@ namespace AlgebraicExpressionsTranslation
 
                     case 3:
                         string function = functionMeanings[postfixCharArray[postfixIndex].ToString()];
-                        value = stack.Pop(true); // В параметры передана заглушка, которая различает перегрузки метода stack.Pop()
+
+                        if (function == "sin" || function == "cos")
+                            value = DegreesToRadians(stack.Pop(true)); // В параметры передана заглушка, которая различает перегрузки метода stack.Pop()
+                        else
+                            value = stack.Pop(true);
+
                         tempResult = 0;
 
                         switch (function)
                         {
-                            case "a": // sin
+                            case "sin": // sin
                                 tempResult = Math.Sin(value);
                                 break;
-                            case "b": // cos
+                            case "cos": // cos
                                 tempResult = Math.Cos(value);
                                 break;
-                            case "c": // sqrt
+                            case "sqrt": // sqrt
                                 if (value >= 0)
                                     tempResult = Math.Sqrt(value);
                                 else
@@ -209,7 +214,7 @@ namespace AlgebraicExpressionsTranslation
                                     return;
                                 }
                                 break;
-                            case "d": // ln
+                            case "ln": // ln
                                 if (value > 0)
                                     tempResult = Math.Log(value);
                                 else if (value == 0)
@@ -239,6 +244,12 @@ namespace AlgebraicExpressionsTranslation
                 }
             }
             while (postfixIndex < postfixCharArray.Length && isTactAvailable && !isEnded);
+        }
+
+        public double DegreesToRadians(double degreesAngle)
+        {
+            double radians = (degreesAngle * Math.PI) / 180;
+            return radians;
         }
 
         public char[] CreateCurrentPostfixString(char[] postfixStringCharArray, int postfixIndex)

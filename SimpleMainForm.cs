@@ -379,7 +379,7 @@ namespace AlgebraicExpressionsTranslation
             ClearTextBoxesList();
             AddTextBoxesToList();
 
-            ClearDictionaries();
+            ClearNumberMeaningsDictionary();
 
             TryParseDouble();
             UpdateCalculation();
@@ -421,10 +421,10 @@ namespace AlgebraicExpressionsTranslation
             textBoxesList.Add(J);
         }
 
-        private void ClearDictionaries()
+        private void ClearNumberMeaningsDictionary()
         {
             numberMeanings.Clear();
-            functionMeanings.Clear();
+            //functionMeanings.Clear();
         }
 
         private void ClearTextBoxesList()

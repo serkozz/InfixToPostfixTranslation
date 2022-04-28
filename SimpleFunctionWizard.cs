@@ -14,7 +14,6 @@ namespace AlgebraicExpressionsTranslation
     {
         string inputString = String.Empty;
 
-        Dictionary<string, string> numbersMeanings = new Dictionary<string, string>();
         Dictionary<string, string> functionMeanings = new Dictionary<string, string>();
 
         public SimpleFunctionWizard()
